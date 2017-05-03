@@ -28,7 +28,8 @@ log = logging.getLogger(__name__)
 _root = None
 _raw = None
 
-version = pkg_resources.require("Cuckoo")[0].version
+# version = pkg_resources.require("Cuckoo")[0].version
+version = "2.0.2"
 
 def set_cwd(path, raw=None):
     global _root, _raw

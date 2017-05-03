@@ -55,3 +55,8 @@ bower_components/
 .sass-cache/
 
 cuckoo/web/manage.py
+
+!cwd/
+
+cwd/*
+!cwd/conf/

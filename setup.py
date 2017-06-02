@@ -62,7 +62,7 @@ open(os.path.join(cwd_private, ".cwd"), "wb").write(githash() or "")
 def update_hashes():
     hashes = {}
     for line in open(os.path.join(cwd_private, "cwd", "hashes.txt"), "rb"):
-        if not line.strip():
+        if not line.strip() or line.startswith("#"):
             continue
         hash_, filename = line.split()
         hashes[filename] = hashes.get(filename, []) + [hash_]
@@ -84,14 +84,6 @@ def update_hashes():
 
 # Provide hashes for our CWD migration process.
 update_hashes()
-
-install_requires = []
-
-# M2Crypto relies on swig being installed. We also don't support the latest
-# version of SWIG. We should be replacing M2Crypto by something else when
-# the time allows us to do so.
-if os.path.exists("/usr/bin/swig"):
-    install_requires.append("m2crypto==0.24.0")
 
 def do_setup(**kwargs):
     try:
@@ -169,6 +161,7 @@ do_setup(
         "django==1.8.4",
         "django_extensions==1.6.7",
         "dpkt==1.8.7",
+        "egghatch==0.1",
         "elasticsearch==5.3.0",
         "flask==0.10.1",
         "flask-sqlalchemy==2.1",
@@ -185,8 +178,9 @@ do_setup(
         "python-magic==0.4.12",
         "sflock>=0.2.12, <0.3",
         "sqlalchemy==1.0.8",
+        "unicorn==1.0.0",
         "wakeonlan==0.2.2",
-    ] + install_requires,
+    ],
     extras_require={
         ":sys_platform == 'win32'": [
             "requests==2.13.0",

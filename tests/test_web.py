@@ -3,6 +3,8 @@
 # See the file 'docs/LICENSE' for copying permission.
 
 import django
+import gridfs
+import hashlib
 import io
 import json
 import mock
@@ -799,6 +801,37 @@ class TestMongoInteraction(object):
             assert self.req(client, packs=["doc", 1]).status_code == 501
             assert self.req(client, packs=["xls", "doc"]).status_code == 200
 
+    class TestFile(object):
+        def test_empty(self, client):
+            r = client.get("/file/screenshots//")
+            assert r.status_code == 500
+
+            r = client.get("/file/screenshots//nofetch/")
+            assert r.status_code == 500
+
+        def test_invalid(self, client):
+            with pytest.raises(pymongo.errors.InvalidId):
+                client.get("/file/screenshots/hello/")
+
+        def test_404(self, client):
+            with pytest.raises(gridfs.errors.NoFile):
+                client.get("/file/screenshots/%s/" % ("A"*24))
+
+        def test_has_file(self, client):
+            data = os.urandom(32)
+
+            obj = mongo.grid.new_file(
+                filename="dump.pcap",
+                contentType="application/vnd.tcpdump.pcap",
+                sha256=hashlib.sha256(data).hexdigest()
+            )
+            obj.write(data)
+            obj.close()
+
+            r = client.get("/file/something/%s/nofetch/" % obj._id)
+            assert r.status_code == 200
+            assert r.content == data
+
 class TestApiEndpoints(object):
     @mock.patch("os.unlink")
     def test_status(self, p, client):
@@ -937,3 +970,99 @@ class TestTemplates(object):
         assert "No PDF metadata" not in r.content
         assert '<code class="javascript">alert(1)</code>' in r.content
         assert '<code class="javascript">alert(2)</code>' in r.content
+
+    def test_network_no_pcap(self, request):
+        set_cwd(tempfile.mkdtemp())
+        cuckoo_create()
+
+        r = render_template(request, "analysis/pages/network/index.html", report={
+            "analysis": {
+                "network": {
+                    "pcap_id": None,
+                },
+            },
+        })
+        assert "No PCAP file was identified" in r.content
+
+    def test_network_has_pcap(self, request):
+        set_cwd(tempfile.mkdtemp())
+        cuckoo_create()
+
+        r = render_template(request, "analysis/pages/network/index.html", report={
+            "analysis": {
+                "network": {
+                    "pcap_id": "wehaveapcapwinner",
+                    "hosts": [], "dns": [], "tcp": [], "udp": [], "icmp": [],
+                    "irc": [], "http": [], "http_ex": [],
+                },
+            },
+        })
+        assert "Download pcap file" in r.content
+        assert "network-analysis-hosts" in r.content
+        assert "network-analysis-dns" in r.content
+
+    def test_summary_has_no_cfgextr(self, request):
+        r = render_template(request, "analysis/pages/summary/index.html", report={
+            "analysis": {
+                "info": {
+                    "category": "file",
+                    "score": 1,
+                },
+                "metadata": {},
+            },
+        })
+        assert "Malware Configuration" not in r.content
+
+    def test_summary_has_cfgextr(self, request):
+        r = render_template(request, "analysis/pages/summary/index.html", report={
+            "analysis": {
+                "info": {
+                    "category": "file",
+                    "score": 10,
+                },
+                "metadata": {
+                    "cfgextr": [{
+                        "family": "Family",
+                        "cnc": [
+                            "http://cncurl1",
+                            "http://cncurl2",
+                        ],
+                        "url": [
+                            "http://downloadurl1",
+                            "http://downloadurl2",
+                        ],
+                        "type": "thisistype",
+                    }],
+                },
+            },
+        })
+        assert "Malware Configuration" in r.content
+        assert "CnC" in r.content
+        assert "URLs" in r.content
+        assert "thisistype" in r.content
+
+    def test_summary_has_2_cfgextr(self, request):
+        r = render_template(request, "analysis/pages/summary/index.html", report={
+            "analysis": {
+                "info": {
+                    "category": "file",
+                    "score": 10,
+                },
+                "metadata": {
+                    "cfgextr": [{
+                        "family": "familyA",
+                        "cnc": [
+                            "http://familyAcnc",
+                        ],
+                    }, {
+                        "family": "familyB",
+                        "cnc": [
+                            "http://familyBcnc",
+                        ],
+                    }],
+                },
+            },
+        })
+        assert "Malware Configuration" in r.content
+        assert "familyA" in r.content
+        assert "familyB" in r.content

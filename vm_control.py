@@ -29,16 +29,17 @@ def execute(*args, **kwargs):
     # )
     # return completed_process.returncode, completed_process.stdout
 
-    kill = lambda process: process.kill()
-    process = subprocess.Popen(stdout=subprocess.PIPE, stderr=subprocess.STDOUT, *popenargs, **kwargs)
+    def kill(process):
+        print(process)
+        process.kill()
+    process = subprocess.Popen(stdout=subprocess.PIPE, stderr=subprocess.STDOUT, *args, **kwargs)
      
     my_timer = threading.Timer(5, kill, [process])
      
     try:
         my_timer.start()
-        stdout, stderr = ping.communicate()
-        output, unused_err = process.communicate()
-        retcode = process.poll()
+        output, _ = process.communicate()
+        ret = process.poll()
     finally:
         my_timer.cancel()
 

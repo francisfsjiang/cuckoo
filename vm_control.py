@@ -8,7 +8,7 @@ VBOXMANAGE_BIN = "VBoxManage"
 
 
 def info_print(msg, ret, out):
-    if not ret:
+    if ret == 0:
         print("%s %s" % (msg, ret))
     else:
         print("%s %s. %s" % (msg, ret, out))
@@ -79,6 +79,28 @@ def clone_vm(from_vm_name, new_vm_name):
     info_print("Clone VM. ", ret, out)
 
 
+def wait_for_vm_ready(vm_name):
+    ret = 1
+
+    while ret != 1:
+        time.sleep(5)
+        cmd = [
+            VBOXMANAGE_BIN,
+            'guestcontrol',
+            vm_name,
+            '--username',
+            'Cuckoo',
+            'run',
+            '--exe',
+            '"c:\\Windows\\system32\\ipconfig.exe"',
+            ]
+        cmd = " ".join(cmd)
+        ret, out = execute(cmd, shell=True)
+
+    time.sleep(20)
+    return
+
+
 def config_vm(vm_name, ip_address):
     print("Configuring vm %s, %s" % (vm_name, ip_address))
 
@@ -91,9 +113,11 @@ def config_vm(vm_name, ip_address):
     ])
     info_print("Start VM. ", ret, out)
 
+    wait_for_vm_ready(vm_name)
+
     ret = 1
-    while ret:
-        time.sleep(5)
+    while ret != 0:
+        time.sleep(10)
         cmd = [
             VBOXMANAGE_BIN,
             'guestcontrol',
@@ -102,26 +126,47 @@ def config_vm(vm_name, ip_address):
             'Cuckoo',
             'run',
             '--exe',
-            '"c:\\Python27\\python.exe"',
+            '"c:\\Windows\\system32\\shutdown.exe"',
             '--',
             '"/c"',
-            '"c:\\Users\\cuckoo\\sudo.py"',
-            '"netsh"',
-            '"interface"',
-            '"ipv4"',
-            '"set"',
-            '"address"',
-            '"\\\"\\\"Local"',
-            '"Area"',
-            '"Connection\\\"\\\""',
-            '"static"',
-            '"%s"' % ip_address,
-            '"255.255.255.0"',
-            '"192.168.56.1"',
+            '"-r"',
+            '"-t"',
+            '"0"',
         ]
         cmd = " ".join(cmd)
         ret, out = execute(cmd, shell=True)
+        info_print("Rebooting VM. ", ret, out)
 
+    time.sleep(10)
+    wait_for_vm_ready(vm_name)
+
+    cmd = [
+        VBOXMANAGE_BIN,
+        'guestcontrol',
+        vm_name,
+        '--username',
+        'Cuckoo',
+        'run',
+        '--exe',
+        '"c:\\Python27\\python.exe"',
+        '--',
+        '"/c"',
+        '"c:\\Users\\cuckoo\\sudo.py"',
+        '"netsh"',
+        '"interface"',
+        '"ipv4"',
+        '"set"',
+        '"address"',
+        '"\\\"\\\"Local"',
+        '"Area"',
+        '"Connection\\\"\\\""',
+        '"static"',
+        '"%s"' % ip_address,
+        '"255.255.255.0"',
+        '"192.168.56.1"',
+    ]
+    cmd = " ".join(cmd)
+    ret, out = execute(cmd, shell=True)
     info_print("Config VM's IP addr. ", ret, out)
 
     cmd = [
@@ -173,7 +218,7 @@ def config_vm(vm_name, ip_address):
     ret, out = execute(cmd, shell=True)
     info_print("Start VM's agent. ", ret, out)
 
-    time.sleep(60)
+    time.sleep(20)
 
     ret, out = execute([
         VBOXMANAGE_BIN,

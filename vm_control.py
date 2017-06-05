@@ -18,19 +18,31 @@ def info_print(msg, ret, out):
 
 def execute(*args, **kwargs):
 
-    # process = subprocess.Popen(stdout=subprocess.PIPE, stderr=subprocess.PIPE, *popenargs, **kwargs)
-    # output, unused_err = process.communicate()
-    # retcode = process.poll()
+    print(args)
 
-    completed_process = subprocess.run(
-        *args,
-        timeout=5,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
-        **kwargs
-    )
+    # completed_process = subprocess.run(
+    #     *args,
+    #     timeout=5,
+    #     stdout=subprocess.PIPE,
+    #     stderr=subprocess.STDOUT,
+    #     **kwargs
+    # )
+    # return completed_process.returncode, completed_process.stdout
 
-    return completed_process.returncode, completed_process.stdout
+    kill = lambda process: process.kill()
+    process = subprocess.Popen(stdout=subprocess.PIPE, stderr=subprocess.STDOUT, *popenargs, **kwargs)
+     
+    my_timer = threading.Timer(5, kill, [process])
+     
+    try:
+        my_timer.start()
+        stdout, stderr = ping.communicate()
+        output, unused_err = process.communicate()
+        retcode = process.poll()
+    finally:
+        my_timer.cancel()
+
+    return ret, output
 
 
 def create_if():
@@ -92,9 +104,10 @@ def clone_vm(from_vm_name, new_vm_name):
 
 
 def wait_for_vm_ready(vm_name):
+    print("Wait for vm")
     ret = 1
 
-    while ret != 1:
+    while ret != 0:
         time.sleep(5)
         cmd = [
             VBOXMANAGE_BIN,
@@ -108,7 +121,9 @@ def wait_for_vm_ready(vm_name):
             ]
         cmd = " ".join(cmd)
         ret, out = execute(cmd, shell=True)
+        info_print("Wait VM. ", ret, out)
 
+    print("Wait for vm, finish")
     time.sleep(5)
     return
 

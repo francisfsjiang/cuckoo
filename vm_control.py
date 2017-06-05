@@ -15,10 +15,17 @@ def info_print(msg, ret, out):
 
 
 def execute(*popenargs, **kwargs):
-    process = subprocess.Popen(stdout=subprocess.PIPE, stderr=subprocess.PIPE, *popenargs, **kwargs)
-    output, unused_err = process.communicate()
-    retcode = process.poll()
-    return retcode, output
+
+    # process = subprocess.Popen(stdout=subprocess.PIPE, stderr=subprocess.PIPE, *popenargs, **kwargs)
+    # output, unused_err = process.communicate()
+    # retcode = process.poll()
+
+    try:
+        ret = subprocess.check_call(popenargs[0], shell=True)
+    except subprocess.CalledProcessError as e:
+        ret = e.returncode
+    output = ""
+    return ret, output
 
 
 def create_if():
@@ -227,7 +234,7 @@ def config_vm(vm_name, ip_address):
         'take',
         "ReadytoRun",
     ])
-    info_print("Take VM's snapshot. ", ret, out)
+    info_print("Taking VM's snapshot. ", ret, out)
 
     ret, out = execute([
         VBOXMANAGE_BIN,
@@ -236,6 +243,15 @@ def config_vm(vm_name, ip_address):
         "poweroff",
     ])
     info_print("Shotdown VM. ", ret, out)
+
+    ret, out = execute([
+        VBOXMANAGE_BIN,
+        'snapshot',
+        vm_name,
+        'restore',
+        "ReadytoRun",
+    ])
+    info_print("Restoring VM's snapshot. ", ret, out)
 
 
 def create_vm_from_vdi(vm_name, vdi_path):

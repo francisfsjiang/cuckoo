@@ -136,6 +136,33 @@ def config_vm(vm_name, ip_address):
         '--',
         '"/c"',
         '"c:\\Users\\cuckoo\\sudo.py"',
+        '"netsh"',
+        '"interface"',
+        '"ipv4"',
+        '"set"',
+        '"dns"',
+        '"\\\"\\\"Local"',
+        '"Area"',
+        '"Connection\\\"\\\""',
+        '"static"',
+        '"223.5.5.5"',
+        ]
+    cmd = " ".join(cmd)
+    ret, out = execute(cmd, shell=True)
+    info_print("Config VM's DNS addr. ", ret, out)
+
+    cmd = [
+        VBOXMANAGE_BIN,
+        'guestcontrol',
+        vm_name,
+        '--username',
+        'Cuckoo',
+        'run',
+        '--exe',
+        '"c:\\Python27\\python.exe"',
+        '--',
+        '"/c"',
+        '"c:\\Users\\cuckoo\\sudo.py"',
         '"cmd"',
         '"/c"',
         '"start"',
@@ -145,6 +172,8 @@ def config_vm(vm_name, ip_address):
     cmd = " ".join(cmd)
     ret, out = execute(cmd, shell=True)
     info_print("Start VM's agent. ", ret, out)
+
+    time.sleep(60)
 
     ret, out = execute([
         VBOXMANAGE_BIN,

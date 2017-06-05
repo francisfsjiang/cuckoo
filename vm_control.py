@@ -3,6 +3,8 @@ import subprocess
 import sys
 import os
 import time
+import errno
+import threading
 
 VBOXMANAGE_BIN = "VBoxManage"
 
@@ -14,18 +16,21 @@ def info_print(msg, ret, out):
         print("%s %s. %s" % (msg, ret, out))
 
 
-def execute(*popenargs, **kwargs):
+def execute(*args, **kwargs):
 
     # process = subprocess.Popen(stdout=subprocess.PIPE, stderr=subprocess.PIPE, *popenargs, **kwargs)
     # output, unused_err = process.communicate()
     # retcode = process.poll()
 
-    try:
-        ret = subprocess.check_call(popenargs[0], shell=True)
-    except subprocess.CalledProcessError as e:
-        ret = e.returncode
-    output = ""
-    return ret, output
+    completed_process = subprocess.run(
+        *args,
+        timeout=5,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        **kwargs
+    )
+
+    return completed_process.returncode, completed_process.stdout
 
 
 def create_if():
@@ -104,7 +109,7 @@ def wait_for_vm_ready(vm_name):
         cmd = " ".join(cmd)
         ret, out = execute(cmd, shell=True)
 
-    time.sleep(20)
+    time.sleep(5)
     return
 
 

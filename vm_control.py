@@ -334,7 +334,7 @@ def create_vm_from_vdi(vm_name, vdi_path):
         "modifyvm",
         vm_name,
         "--vram",
-        "21",
+        "64",
     ])
     info_print("Modify VM's video memory. ", ret, out)
 
@@ -411,9 +411,9 @@ def create(vdi_path):
 
 def copy(copy_num):
     for i in range(1, copy_num + 1):
-        print("-----")
         clone_vm("Cuckoo0", "Cuckoo%d" % i)
         config_vm("Cuckoo%d" % i, "192.168.56.%d" % (110 + i))
+        print("-----")
 
 
 if __name__ == "__main__":

@@ -19,7 +19,7 @@ def info_print(msg, ret, out):
 
 def execute(*args, **kwargs):
 
-    #print(args)
+    print(args)
 
     # completed_process = subprocess.run(
     #     *args,
@@ -31,15 +31,13 @@ def execute(*args, **kwargs):
     # return completed_process.returncode, completed_process.stdout
 
     def kill(process):
-        print(process)
         process.kill()
-        print(process.pid)
         os.kill(process.pid, signal.SIGKILL)
-        subprocess.run("ps -ef|grep guestcontrol | grep -v grep | awk '{print $2}' | xargs kill -9")
+        subprocess.run("kill -9 %d" % process.id, shell=True)
 
     process = subprocess.Popen(stdout=subprocess.PIPE, stderr=subprocess.STDOUT, *args, **kwargs)
 
-    my_timer = threading.Timer(5, kill, [process])
+    my_timer = threading.Timer(20, kill, [process])
     ret = 1
     try:
         my_timer.start()
@@ -127,6 +125,7 @@ def wait_for_vm_ready(vm_name):
             ]
         cmd = " ".join(cmd)
         ret, out = execute(cmd, shell=True)
+        info_print("Waiting for VM. ", ret, out)
 
     print("Wait for vm, finish")
     time.sleep(5)

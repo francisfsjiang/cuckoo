@@ -267,11 +267,11 @@ def config_vm(vm_name, ip_address):
         '"c:\\Python27\\python.exe"',
         '--',
         '"/c"',
-        '"c:\\Users\\cuckoo\\change_display.py"'
+        '"c:\\Users\\cuckoo\\change_display.py"',
         '"set"',
         '"1920"',
         '"1440"',
-        '"32"'
+        '"32"',
     ]
     cmd = " ".join(cmd)
     ret, out = execute(cmd, shell=True)

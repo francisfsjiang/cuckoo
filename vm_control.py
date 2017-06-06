@@ -19,7 +19,7 @@ def info_print(msg, ret, out):
 
 def execute(*args, **kwargs):
 
-    print(args)
+    #print(args)
 
     # completed_process = subprocess.run(
     #     *args,
@@ -132,20 +132,7 @@ def wait_for_vm_ready(vm_name):
     return
 
 
-def config_vm(vm_name, ip_address):
-    print("Configuring vm %s, %s" % (vm_name, ip_address))
-
-    ret, out = execute([
-        VBOXMANAGE_BIN,
-        "startvm",
-        vm_name,
-        "--type",
-        "headless",
-    ])
-    info_print("Start VM. ", ret, out)
-
-    wait_for_vm_ready(vm_name)
-
+def reboot_vm(vm_name):
     ret = 1
     while ret != 0:
         time.sleep(10)
@@ -169,6 +156,20 @@ def config_vm(vm_name, ip_address):
         info_print("Rebooting VM. ", ret, out)
 
     time.sleep(10)
+
+
+def config_vm(vm_name, ip_address):
+    print("Configuring vm %s, %s" % (vm_name, ip_address))
+
+    ret, out = execute([
+        VBOXMANAGE_BIN,
+        "startvm",
+        vm_name,
+        "--type",
+        "headless",
+    ])
+    info_print("Start VM. ", ret, out)
+
     wait_for_vm_ready(vm_name)
 
     cmd = [
@@ -227,6 +228,12 @@ def config_vm(vm_name, ip_address):
     ret, out = execute(cmd, shell=True)
     info_print("Config VM's DNS addr. ", ret, out)
 
+    wait_for_vm_ready(vm_name)
+
+    reboot_vm(vm_name)
+
+    wait_for_vm_ready(vm_name)
+
     cmd = [
         VBOXMANAGE_BIN,
         'guestcontrol',
@@ -248,6 +255,27 @@ def config_vm(vm_name, ip_address):
     cmd = " ".join(cmd)
     ret, out = execute(cmd, shell=True)
     info_print("Start VM's agent. ", ret, out)
+
+    cmd = [
+        VBOXMANAGE_BIN,
+        'guestcontrol',
+        vm_name,
+        '--username',
+        'Cuckoo',
+        'run',
+        '--exe',
+        '"c:\\Python27\\python.exe"',
+        '--',
+        '"/c"',
+        '"c:\\Users\\cuckoo\\change_display.py"'
+        '"set"',
+        '"1920"',
+        '"1440"',
+        '"32"'
+    ]
+    cmd = " ".join(cmd)
+    ret, out = execute(cmd, shell=True)
+    info_print("Change VM's resolution. ", ret, out)
 
     time.sleep(20)
 
@@ -359,16 +387,30 @@ def create_vm_from_vdi(vm_name, vdi_path):
 
 
 def main():
-    print("Vdi path: %s" % sys.argv[1])
-    print("Creating %d vms" % int(sys.argv[2]))
 
+    if sys.argv[1] == "create":
+        vdi_path = sys.argv[2]
+        print("Vdi path: %s" % vdi_path)
+        create(vdi_path)
+
+    elif sys.argv[1] == "copy":
+        num = int(sys.argv[2])
+        print("Copying %d vms" % num)
+        copy(num)
+    else:
+        exit(-1)
+
+
+def create(vdi_path):
     create_vm_from_vdi(
         "Cuckoo0",
-        sys.argv[1]
+        vdi_path
     )
     config_vm("Cuckoo0", "192.168.56.110")
 
-    for i in range(1, int(sys.argv[2])):
+
+def copy(copy_num):
+    for i in range(1, copy_num + 1):
         print("-----")
         clone_vm("Cuckoo0", "Cuckoo%d" % i)
         config_vm("Cuckoo%d" % i, "192.168.56.%d" % (110 + i))

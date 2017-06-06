@@ -1,4 +1,4 @@
-# Copyright (C) 2012-2013 Claudio Guarnieri.
+#: Copyright (C) 2012-2013 Claudio Guarnieri.
 # Copyright (C) 2014-2017 Cuckoo Foundation.
 # This file is part of Cuckoo Sandbox - http://www.cuckoosandbox.org
 # See the file 'docs/LICENSE' for copying permission.
@@ -321,6 +321,8 @@ class File(object):
 
         results = []
         for match in File.yara_rules[category].match(self.file_path):
+            if type(match) == str:
+                continue
             strings, offsets = set(), {}
             for _, key, value in match.strings:
                 strings.add(base64.b64encode(value))

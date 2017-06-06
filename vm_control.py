@@ -33,7 +33,7 @@ def execute(*args, **kwargs):
     # def kill(process):
     #     process.kill()
     #     os.kill(process.pid, signal.SIGKILL)
-    #     subprocess.run("kill -9 %d" % process.id, shell=True)
+    #     subprocess.run("kill -9 %d" % process.pid, shell=True)
 
     # process = subprocess.Popen(stdout=subprocess.PIPE, stderr=subprocess.STDOUT, *args, **kwargs)
     #

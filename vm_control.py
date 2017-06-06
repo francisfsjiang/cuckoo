@@ -21,32 +21,32 @@ def execute(*args, **kwargs):
 
     #print(args)
 
-    # completed_process = subprocess.run(
-    #     *args,
-    #     timeout=5,
-    #     stdout=subprocess.PIPE,
-    #     stderr=subprocess.STDOUT,
-    #     **kwargs
-    # )
-    # return completed_process.returncode, completed_process.stdout
+    completed_process = subprocess.run(
+        *args,
+        timeout=10,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
+        **kwargs
+    )
+    return completed_process.returncode, completed_process.stdout
 
-    def kill(process):
-        process.kill()
-        os.kill(process.pid, signal.SIGKILL)
-        subprocess.run("kill -9 %d" % process.id, shell=True)
+    # def kill(process):
+    #     process.kill()
+    #     os.kill(process.pid, signal.SIGKILL)
+    #     subprocess.run("kill -9 %d" % process.id, shell=True)
 
-    process = subprocess.Popen(stdout=subprocess.PIPE, stderr=subprocess.STDOUT, *args, **kwargs)
-
-    my_timer = threading.Timer(20, kill, [process])
-    ret = 1
-    try:
-        my_timer.start()
-        output, _ = process.communicate()
-        ret = process.poll()
-    finally:
-        my_timer.cancel()
-
-    return ret, output
+    # process = subprocess.Popen(stdout=subprocess.PIPE, stderr=subprocess.STDOUT, *args, **kwargs)
+    #
+    # my_timer = threading.Timer(20, kill, [process])
+    # ret = 1
+    # try:
+    #     my_timer.start()
+    #     output, _ = process.communicate()
+    #     ret = process.poll()
+    # finally:
+    #     my_timer.cancel()
+    #
+    # return ret, output
 
 
 def create_if():
@@ -144,9 +144,11 @@ def reboot_vm(vm_name):
             'Cuckoo',
             'run',
             '--exe',
-            '"c:\\Windows\\system32\\shutdown.exe"',
+            '"c:\\Python27\\python.exe"',
             '--',
             '"/c"',
+            '"c:\\Users\\cuckoo\\sudo.py"',
+            '"shutdown"',
             '"-r"',
             '"-t"',
             '"0"',

@@ -655,7 +655,7 @@ $(function() {
             template: HANDLEBARS_TEMPLATES['dndupload_simple'],
             ajax: true,
             templateData: {
-                title: 'Submit a file for Analysis',
+                title: '提交文件进行分析',
                 html: `<i class="fa fa-upload"></i>\n${$("#analysis_token").html()}`
             },
             dragstart: function(uploader, holder) {

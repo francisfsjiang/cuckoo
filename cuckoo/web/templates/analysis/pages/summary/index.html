@@ -48,7 +48,7 @@
                                     样本无威胁
                                 <strong>{{ report.analysis.info.score }} / 10.</strong>
                             </div>
-                        {% elif report.analysis.info.score < 2 %}
+                        {% elif report.analysis.info.score < 4 %}
                             <div class="alert alert-info">
 {#                                <p>此 {{ report.analysis.info.category }} shows some signs of potential malicious#}
 {#                                    behavior.</p>#}
@@ -57,7 +57,7 @@
                                     样本威胁等级低
                                 <strong>{{ report.analysis.info.score }} / 10.</strong>
                             </div>
-                        {% elif report.analysis.info.score < 5 %}
+                        {% elif report.analysis.info.score < 7 %}
                             <div class="alert alert-warning">
 {#                                This {{ report.analysis.info.category }} shows numerous signs of malicious behavior.#}
 {#                                <br/><br/>#}

@@ -5005,10 +5005,10 @@ body.night .dndupload__v2 {
   content: "\f023";
 }
 .cuckoo-nav .lock-sidebar span:before {
-  content: "Lock sidebar";
+  content: "锁定边栏";
 }
 .locked:not(.locked-silent) .cuckoo-nav .lock-sidebar span:before {
-  content: "Unlock sidebar";
+  content: "解锁边栏";
 }
 
 /* 

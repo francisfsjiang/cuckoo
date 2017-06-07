@@ -1,5 +1,5 @@
 <div class="cuckoo-errors">
-	<h4><span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span>  Errors</h4>
+	<h4><span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span>  错误</h4>
 
 		{% for action in report.analysis.debug.action %}
 		    {% if action == "vmrouting" %}
@@ -36,7 +36,7 @@
 	</ul>
 
 	<div class="clearfix">
-		<a class="btn btn-default" href="#modal_feedback" data-toggle="modal">Send feedback</a>
+		<a class="btn btn-default" href="#modal_feedback" data-toggle="modal">发送反馈</a>
         {% if report.analysis.debug.errors|length > 3 %}
 		<div class="pull-right show-all-errors">
 			<span>Showing 3 of {{ report.analysis.debug.errors|length }} errors</span>

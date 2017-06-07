@@ -8,7 +8,7 @@
         <section class="flex-nav__body cuckoo-analysis" tabindex="0">
 
             <header class="page-header cuckoo-analysis__header">
-                <h1>Process Memory</h1>
+                <h1>进程内存分析</h1>
             </header>
 
             <div class="container-fluid">
@@ -17,19 +17,20 @@
                         {% if report.analysis.procmemory %}
                             {% for proc in report.analysis.procmemory %}
                                 <div class="panel panel-default">
-                                    <div class="panel-heading"><h3 class="panel-title">Process memory dump for <b>{{ proc.pid|process_name:report.analysis }}</b> (PID {{ proc.pid }}, dump {{ proc.num }})</h3></div>
+                                    <div class="panel-heading"><h3 class="panel-title"><b>{{ proc.pid|process_name:report.analysis }}</b> (PID {{ proc.pid }}, dump {{ proc.num }})</h3></div>
                                     <div class="panel-body">
                                         {% if proc.procmem_id %}
-                                            <a class="btn btn-primary btn-small" href="{% url "analysis.views.file" "memdump" proc.procmem_id %}">Download</a>
+                                            <a class="btn btn-primary btn-small" href="{% url "analysis.views.file" "memdump" proc.procmem_id %}">下载</a>
                                         {% endif %}
 
                                         {% if proc.extracted %}
                                             <p>
-                                                <b>Extracted/injected images</b> <small>(may contain unpacked executables)</small>
+{#                                                <b>Extracted/injected images</b> <small>(may contain unpacked executables)</small>#}
+                                                <b>内存镜像</b> <small>(可能存在未解包可执行文件)</small>
                                                 <br>
                                                 {% for extracted in proc.extracted %}
                                                     {% if extracted.extracted_id %}
-                                                        <a href="{% url "analysis.views.file" "procmem_extracted" extracted.extracted_id %}">Download #{{ forloop.counter }}</a>
+                                                        <a href="{% url "analysis.views.file" "procmem_extracted" extracted.extracted_id %}">下载 #{{ forloop.counter }}</a>
                                                         <br>
                                                     {% endif %}
                                                 {% endfor %}
@@ -76,7 +77,7 @@
             <!-- footer replacement to avoid double scrollbars -->
             <footer class="flex-grid__footer center-left">
                 <p class="footnote">
-                    &copy;2010-2017 <a href="http://www.cuckoosandbox.org" target="_blank">Cuckoo Sandbox</a>
+                    &copy;2010-2017 <a href="http://www.bupt.edu.cn" target="_blank">北京邮电大学</a>
                 </p>
                 <div class="logo">
                     <img src="{% static "graphic/cuckoo_inverse.png" %}" alt="Cuckoo Malware Analysis Sandbox" />

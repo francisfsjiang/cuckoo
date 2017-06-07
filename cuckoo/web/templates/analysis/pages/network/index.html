@@ -8,10 +8,10 @@
         <article class="flex-nav__body cuckoo-analysis" tabindex="0">
 
             <header class="cuckoo-analysis__header">
-                <h1>Network Analysis</h1>
+                <h1>网络行为分析</h1>
                 {% if report.analysis.network.pcap_id %}
                 <div class="header-right valign-bottom">
-                    <a href="{% url "analysis.views.file" "pcap" report.analysis.network.pcap_id %}" title="Download pcap file"><i class="fa fa-download"></i> Download pcap</a>
+                    <a href="{% url "analysis.views.file" "pcap" report.analysis.network.pcap_id %}" title="Download pcap file"><i class="fa fa-download"></i> 下载 pcap</a>
                 </div>
                 {% endif %}
             </header>
@@ -66,7 +66,7 @@
             <!-- footer replacement to avoid double scrollbars -->
             <footer class="flex-grid__footer spread-alignment">
                 <p class="footnote">
-                    &copy;2010-2017 <a href="http://www.cuckoosandbox.org" target="_blank">Cuckoo Sandbox</a>
+                    &copy;2010-2017 <a href="http://www.bupt.edu.cn" target="_blank">北京邮电大学</a>
                 </p>
                 <div class="logo">
                     <img src="{% static "graphic/cuckoo_inverse.png" %}" alt="Cuckoo Malware Analysis Sandbox" />

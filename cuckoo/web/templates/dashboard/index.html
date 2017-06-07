@@ -6,32 +6,32 @@
 
 <div class="flex-grid__horizontal--grow dashboard">
     <div class="flex-grid__column dashboard__left">
-        <h2 class="dashboard__col-title">Insights</h2>
+        <h2 class="dashboard__col-title">分析任务统计</h2>
 
-        <div class="dashboard-module" data-dashboard-module="installation">
-            <header class="dashboard-module__header">
-                <h4>Cuckoo Installation</h4>
-            </header>
-            <section class="dashboard-module__body">
-                <table class="simple">
-                    <tbody>
-                        <tr>
-                            <td>Version</td>
-                            <td>{{ report.version }}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </section>
-            <!--
-            <footer class="dashboard-module__footer">
-                <p><i class="fa fa-info-circle"></i> How to: <a href="http://docs.cuckoosandbox.org/en/latest/installation/upgrade/" target="_blank">Upgrade your Cuckoo installation</a></p>
-            </footer>
-            -->
-        </div>
+{#        <div class="dashboard-module" data-dashboard-module="installation">#}
+{#            <header class="dashboard-module__header">#}
+{#                <h4></h4>#}
+{#            </header>#}
+{#            <section class="dashboard-module__body">#}
+{#                <table class="simple">#}
+{#                    <tbody>#}
+{#                        <tr>#}
+{#                            <td>版本</td>#}
+{#                            <td>{{ report.version }}</td>#}
+{#                        </tr>#}
+{#                    </tbody>#}
+{#                </table>#}
+{#            </section>#}
+{#            <!--#}
+{#            <footer class="dashboard-module__footer">#}
+{#                <p><i class="fa fa-info-circle"></i> How to: <a href="http://docs.cuckoosandbox.org/en/latest/installation/upgrade/" target="_blank">Upgrade your Cuckoo installation</a></p>#}
+{#            </footer>#}
+{#            -->#}
+{#        </div>#}
 
         <div class="dashboard-module">
             <header class="dashboard-module__header">
-                <h4>Usage statistics</h4>
+                <h4>Statics</h4>
             </header>
             <section class="dashboard-module__body">
                 <table class="simple">
@@ -53,7 +53,7 @@
     </div>
     <div class="flex-grid__column dashboard__right">
 
-        <h2 class="dashboard__col-title">Cuckoo</h2>
+        <h2 class="dashboard__col-title">恶意软件识别</h2>
 
         <div class="dashboard-module__lg" data-dashboard-module="upload">
             <div class="dashboard-module__body omni-uploader">
@@ -75,10 +75,10 @@
                 <div class="dashboard-module__body--right">
                     <div id="submit-with-link">
                         <form>
-                            <h5>Submit URLs/hashes</h5>
+                            <h5>提交URL/Hashes</h5>
                             <textarea rows="6" class="form-control" placeholder="Submit URLs/hashes"></textarea>   
                             <div class="text-center">
-                                <button type="submit" class="button--lg">Submit</button>
+                                <button type="submit" class="button--lg">提交</button>
                             </div>
                         </form>
                     </div>
@@ -87,7 +87,7 @@
             </div>  
 
             <div class="dashboard-module__footer">
-                <p class="align-left"><i class="fa fa-info-circle"></i> Drag your file into the left field or click the icon to select a file.</p>
+                <p class="align-left"><i class="fa fa-info-circle"></i> 拖拽文件到左边区域或者点击图标来提交文件</p>
             </div>
 
         </div>
@@ -95,18 +95,18 @@
         <div class="dashboard-module" data-dashboard-module="system">
             <header class="dashboard-module__header">
                 <h4 class="align-left clearfix">
-                    System info
+                    系统信息
                     <div class="pull-right">
-                        <span class="label label-free">free</span>
-                        <span class="label label-used">used</span>
-                        <span class="label label-total">total</span>
+                        <span class="label label-free">空闲</span>
+                        <span class="label label-used">已使用</span>
+                        <span class="label label-total">总量</span>
                     </div>
                 </h4>
             </header>
             <section class="dashboard-module__body free-disk-space">
 
                 <div class="dashboard-module__body--flex">
-                    <h5>Free disk space</h5>
+                    <h5>磁盘空间</h5>
                     <div class="free-disk-space__chart" id="ds-stat">
                         <canvas></canvas>
                         <div class="free-disk-space__legend">
@@ -117,7 +117,7 @@
                 </div>
 
                 <div class="dashboard-module__body--flex">
-                    <h5>CPU Load</h5>
+                    <h5>CPU负载</h5>
                     <div class="free-disk-space__chart" id="cpu-stat">
                         <canvas></canvas>
                         <div class="free-disk-space__legend">
@@ -128,7 +128,7 @@
                 </div>
 
                 <div class="dashboard-module__body--flex">
-                    <h5>Memory usage</h5>
+                    <h5>内存使用量</h5>
                     <div class="free-disk-space__chart" id="memory-stat">
                         <canvas></canvas>
                         <div class="free-disk-space__legend">
@@ -154,7 +154,7 @@
 
     <div class="flex-grid__column" id="dashboard-tables">
 
-        <h2 class="dashboard__col-title">Recent analyses</h2>
+        <h2 class="dashboard__col-title">近期分析</h2>
 
         <!-- recent analyses -->
         <div class="dashboard-module__lg" data-dashboard-module="processes">
@@ -195,7 +195,7 @@
             </section>
 
             <footer class="dashboard-module__footer">
-                <p><a href="/analysis/">Show all recent analyses</a></p>
+                <p><a href="/analysis/">显示所有最近分析</a></p>
             </footer>
 
         </div>

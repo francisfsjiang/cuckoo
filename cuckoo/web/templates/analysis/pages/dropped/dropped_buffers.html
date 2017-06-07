@@ -20,11 +20,11 @@
                                 <div class="panel panel-default">
                                     <table class="table table-striped table-condensed">
                                         <tr>
-                                            <th class="col-md-1 text-right">Name</th>
+                                            <th class="col-md-1 text-right">名称</th>
                                             <td><b>{{file.name}}</b></td>
                                         </tr>
                                         <tr>
-                                            <th class="text-right">Size</th>
+                                            <th class="text-right">大小</th>
                                             <td>{{ file.size | sizeof_fmt }}</td>
                                         </tr>
                                         <tr>
@@ -67,12 +67,12 @@
                                         </tr>
                                         <tr>
                                             <th class="text-right">VirusTotal</th>
-                                            <td><a href="https://www.virustotal.com/en/file/{{file.sha256}}/analysis/">Search for analysis</a></td>
+                                            <td><a href="https://www.virustotal.com/en/file/{{file.sha256}}/analysis/">搜索</a></td>
                                         </tr>
                                         {% if file.object_id %}
                                             <tr>
                                                 <th class="text-right"></th>
-                                                <td><a href="{% url "analysis.views.file" "buffer" file.object_id %}" class="btn btn-primary btn-small">Download</a></td>
+                                                <td><a href="{% url "analysis.views.file" "buffer" file.object_id %}" class="btn btn-primary btn-small">下载</a></td>
                                             </tr>
                                         {% endif %}
                                     </table>
@@ -89,7 +89,7 @@
              <!-- footer replacement to avoid double scrollbars -->
             <footer class="flex-grid__footer spread-alignment">
                 <p class="footnote">
-                    &copy;2010-2017 <a href="http://www.cuckoosandbox.org" target="_blank">Cuckoo Sandbox</a>
+                    &copy;2010-2017 <a href="http://www.bupt.edu.cn" target="_blank">北京邮电大学</a>
                 </p>
                 <div class="logo">
                     <img src="{% static "graphic/cuckoo_inverse.png" %}" alt="Cuckoo Malware Analysis Sandbox" />

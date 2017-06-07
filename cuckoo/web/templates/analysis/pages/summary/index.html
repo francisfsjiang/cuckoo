@@ -9,7 +9,7 @@
 
             <!-- common analysis page header -->
             <header class="page-header cuckoo-analysis__header">
-                <h1>Summary </h1>
+                <h1>概览 </h1>
                 {% if report.analysis.target.category == "file" %}
                 <div class="header-right">
                     <span class="file-name"><i class="fa fa-file-o"></i>
@@ -40,38 +40,45 @@
 
                     </div>
                     <div class="col-md-4">
-                        <h4><span class="glyphicon glyphicon-fire" aria-hidden="true"></span> Score</h4>
+                        <h4><span class="glyphicon glyphicon-fire" aria-hidden="true"></span> 威胁程度</h4>
 
                         {% if report.analysis.info.score < 1 %}
                             <div class="alert alert-success">
-                                This {{ report.analysis.info.category }} appears fairly benign with a score of
-                                <strong>{{ report.analysis.info.score }} out of 10.</strong>
+{#                                此 {{ report.analysis.info.category }} 为低安全风险#}
+                                    样本无威胁
+                                <strong>{{ report.analysis.info.score }} / 10.</strong>
                             </div>
                         {% elif report.analysis.info.score < 2 %}
                             <div class="alert alert-info">
-                                <p>This {{ report.analysis.info.category }} shows some signs of potential malicious
-                                    behavior.</p>
-                                <p>The score of this {{ report.analysis.info.category }} is
-                                    <strong>{{ report.analysis.info.score }} out of 10.</strong></p>
+{#                                <p>此 {{ report.analysis.info.category }} shows some signs of potential malicious#}
+{#                                    behavior.</p>#}
+{#                                <p>The score of this {{ report.analysis.info.category }} is#}
+{#                                    <strong>{{ report.analysis.info.score }} out of 10.</strong></p>#}
+                                    样本威胁等级低
+                                <strong>{{ report.analysis.info.score }} / 10.</strong>
                             </div>
                         {% elif report.analysis.info.score < 5 %}
                             <div class="alert alert-warning">
-                                This {{ report.analysis.info.category }} shows numerous signs of malicious behavior.
-                                <br/><br/>
-                                The score of this {{ report.analysis.info.category }} is
-                                <strong>{{ report.analysis.info.score }} out of 10.</strong>
+{#                                This {{ report.analysis.info.category }} shows numerous signs of malicious behavior.#}
+{#                                <br/><br/>#}
+{#                                The score of this {{ report.analysis.info.category }} is#}
+{#                                <strong>{{ report.analysis.info.score }} / 10.</strong>#}
+                                样本威胁等级中
+                                <strong>{{ report.analysis.info.score }} / 10.</strong>
                             </div>
                         {% else %}
                             <div class="alert alert-danger">
-                                <p>This {{ report.analysis.info.category }} is <b>very suspicious</b>, with a score of
-                                    <strong>{{ report.analysis.info.score }} out of 10!</strong></p>
+{#                                <p>This {{ report.analysis.info.category }} is <b>very suspicious</b>, with a score of#}
+{#                                    <strong>{{ report.analysis.info.score }} out of 10!</strong></p>#}
+                                样本威胁等级高
+                                <strong>{{ report.analysis.info.score }} / 10.</strong>
                             </div>
                         {% endif %}
 
-                        <p style="font-size: 11px;">
-                            <b>Please notice</b>: The scoring system is currently still in development and should be
-                            considered an <b><i>alpha</i></b> feature.
-                        </p>
+{#                        <p style="font-size: 11px;">#}
+{#                            <b>Please notice</b>: The scoring system is currently still in development and should be#}
+{#                            considered an <b><i>alpha</i></b> feature.#}
+{#                        </p>#}
 
                         <hr>
 
@@ -128,13 +135,13 @@
 
                         <h4><span class="glyphicon glyphicon-send" aria-hidden="true"></span> Feedback</h4>
 
-                        <p style="font-size: 11px;">
-                            {% if report.analysis.feedback %}
-                                Feedback sent on <b>{{ report.analysis.feedback.date }}</b> Thanks!
-                            {% else %}
-                                Expecting different results? Send us this analysis and we will inspect it. <a data-toggle="modal" data-target="#modal_feedback" href="#">Click here</a>
-                            {% endif %}
-                        </p>
+{#                        <p style="font-size: 11px;">#}
+{#                            {% if report.analysis.feedback %}#}
+{#                                Feedback sent on <b>{{ report.analysis.feedback.date }}</b> Thanks!#}
+{#                            {% else %}#}
+{#                                Expecting different results? Send us this analysis and we will inspect it. <a data-toggle="modal" data-target="#modal_feedback" href="#">Click here</a>#}
+{#                            {% endif %}#}
+{#                        </p>#}
                     </div>
                 </div>
 

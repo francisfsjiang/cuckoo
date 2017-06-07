@@ -14,14 +14,14 @@
 			<a href="{% url "analysis" report.analysis.info.id "summary" %}"
 			{% if env.view_kwargs.page == 'summary' %} class="active" {% endif %}>
 				<i class="fa fa-home"></i>
-				<span>Summary</span>
+				<span>概览</span>
 			</a>
 		</li>
 		<li>
 			<a href="{% url "analysis" report.analysis.info.id "static" %}"
 			{% if env.view_kwargs.page == 'static' %} class="active" {% endif %}>
 				<i class="fa fa-book"></i>
-				<span>Static Analysis</span>
+				<span>静态分析</span>
 			</a>
 		</li>
 		<li>
@@ -38,7 +38,7 @@
 			<a href="{% url "analysis" report.analysis.info.id "behavior" %}"
 			{% if env.view_kwargs.page == 'behavior' %} class="active" {% endif %}>
 				<i class="fa fa-share-alt-square"></i>
-				<span>Behavioral Analysis</span>
+				<span>动态行为分析</span>
                 {% if report.analysis.behavior %}
 				<em>{{ report.analysis.behavior.processes|filter_key_if_has:"track"|length }}</em>
                 {% endif %}
@@ -48,14 +48,14 @@
 			<a href="{% url "analysis" report.analysis.info.id "network" %}"
 			{% if env.view_kwargs.page == 'network' %} class="active" {% endif %}>
 				<i class="fa fa-globe"></i>
-				<span>Network Analysis</span>
+				<span>网络分析</span>
 			</a>
 		</li>
 		<li>
 			<a href="{% url "analysis" report.analysis.info.id "dropped_files" %}"
 			{% if env.view_kwargs.page == 'dropped_files' %} class="active"	{% endif %}>
 				<i class="fa fa-file-code-o"></i>
-				<span>Dropped Files</span>
+				<span>文件记录</span>
 				<em>{{ report.analysis.dropped|length }}</em>
 			</a>
 		</li>
@@ -85,7 +85,7 @@
 			<a href="{% url "analysis" report.analysis.info.id "procmemory" %}"
 			{% if env.view_kwargs.page == 'procmemory' %} class="active" {% endif %}>
 				<i class="fa fa-qrcode"></i>
-				<span>Process Memory</span>
+				<span>进程内存分析</span>
                 {% if report.analysis.procmemory %}
 				<em>{{ report.analysis.procmemory|length }}</em>
                 {% endif %}
@@ -97,7 +97,7 @@
 			<a href="{% url "analysis" report.analysis.info.id "memory" %}"
 			{% if env.view_kwargs.page == "memory" %} class="active" {% endif %}>
 				<i class="fa fa-qrcode"></i>
-				<span>VM Memory Dump</span>
+				<span>虚拟机内存分析</span>
 			</a>
 		</li>
         {% endif %}
@@ -106,36 +106,36 @@
 			<a href="{% url "analysis/compare/left" report.analysis.info.id %}"
 			{% if env.view_kwargs.page == 'compare' %} class="active" {% endif %}>
 				<i class="fa fa-random"></i>
-				<span>Compare Analysis</span>
+				<span>对比分析</span>
 			</a>
 		</li>
 		<li>
 			<a href="{% url "analysis" report.analysis.info.id "export" %}"
 			{% if env.view_kwargs.page == 'export' %} class="active" {% endif %}>
 				<i class="fa fa-download"></i>
-				<span>Export Analysis</span>
+				<span>分析导出</span>
 			</a>
 		</li>
 		<li>
 		<a href="{% url "analysis/reboot" report.analysis.info.id %}"
 		{% if env.view_kwargs.page == 'behavioral' %} class="active" {% endif %}>
 			<i class="fa fa-power-off"></i>
-			<span>Reboot Analysis</span>
+			<span>重新分析</span>
 		</a>
 		</li>
 		<li>
 			<a href="{% url "analysis" report.analysis.info.id "options" %}"
 			{% if env.view_kwargs.page == 'options' %} class="active" {% endif %}>
 				<i class="fa fa-cogs"></i>
-				<span>Options</span>
+				<span>选项</span>
 			</a>
 		</li>
-		<li>
-			<a href="#" data-toggle="modal" data-target="#modal_feedback">
-				<i class="fa fa-bug"></i>
-				<span>Feedback</span>
-			</a>
-		</li>
+{#		<li>#}
+{#			<a href="#" data-toggle="modal" data-target="#modal_feedback">#}
+{#				<i class="fa fa-bug"></i>#}
+{#				<span>反馈</span>#}
+{#			</a>#}
+{#		</li>#}
 
 		<li class="lock-sidebar">
 			<a href="sidebar:toggle-lock" title="Click to disable collapsing">

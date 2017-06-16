@@ -2,11 +2,11 @@
 
     <thead>
         <tr>
-            <th>#</th>
-            <th>Date</th>
-            <th>File</th>
-            <th>Package</th>
-            <th>Score</th>
+            <th>ID</th>
+            <th>日期</th>
+            <th>文件</th>
+            <th>类型</th>
+            <th>威胁程度</th>
         </tr>
     </thead>
 
@@ -18,7 +18,7 @@
                 <td>{{id}}</td>
                 <td>{{added_on}}</td>
                 <td>{{target}}</td>
-                <td>{{package}}</td>
+                <td>{{target_type}}</td>
                 <td><span class="badge">{{score}} / 10</span></td>
             </tr>
 
@@ -26,7 +26,7 @@
 
         {{#if lessEntries}}
             <tr class="less-entries">
-                <td colspan="5"><span class="badge">No more results</span></td>
+                <td colspan="5"><span class="badge">暂无数据</span></td>
             </tr>
         {{/if}}
 

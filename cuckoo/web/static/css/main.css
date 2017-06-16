@@ -8249,7 +8249,7 @@ body.cyborg .page-freeze.error {
 }
 .dashboard__left {
   -ms-flex-preferred-size: 415px;
-      flex-basis: 415px;
+      flex-basis: 60%;
   -webkit-box-flex: 0;
       -ms-flex-positive: 0;
           flex-grow: 0;
@@ -8257,7 +8257,7 @@ body.cyborg .page-freeze.error {
       flex-shrink: 0;
 }
 .dashboard__right {
-  -ms-flex-preferred-size: 100%;
+  -ms-flex-preferred-size: 40%;
       flex-basis: 100%;
 }
 .dashboard__col-title {
@@ -8342,6 +8342,8 @@ body.night .dashboard-module__body--flex {
 }
 .dashboard-module__body .cuckoo-table, .dashboard-module__body table.cuckoo-table__fullscreen, .dashboard-module__body .network-display__table > table {
   border: 0;
+  word-break:break-all;
+  word-wrap:break-word;
 }
 .dashboard-module__footer {
   background-color: #fff;
@@ -8477,7 +8479,7 @@ body.night .dashboard-module__tabs > .flex-tabs__tab[href].active, body.night .d
   height: 135px;
 }
 .dashboard-module .free-disk-space__chart.no-data:after, .dashboard-module__lg .free-disk-space__chart.no-data:after, .dashboard-module .no-data.free-disk-space__cpu:after, .dashboard-module__lg .no-data.free-disk-space__cpu:after {
-  content: "no data available";
+  content: "暂无数据";
   display: block;
   position: absolute;
   width: 100%;

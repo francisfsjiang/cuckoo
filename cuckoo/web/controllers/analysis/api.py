@@ -332,15 +332,19 @@ class AnalysisApi(object):
                     target = os.path.basename(f["name"])
                 else:
                     target = None
+                target_type = f.get("type", "Not detected")
                 md5 = f.get("md5") or "-"
             elif category == "url":
                 target = row["target"]["url"]
+                target_type = "URL"
                 md5 = "-"
             elif category == "archive":
                 target = row.get("target", {}).get("human", "-")
+                target_type = "Archive"
                 md5 = "-"
             else:
                 target = None
+                target_type = "Not Detected"
                 md5 = "-"
 
             tasks[info["id"]] = {
@@ -352,6 +356,7 @@ class AnalysisApi(object):
                 "completed_on": info.get("ended"),
                 "status": "reported",
                 "score": info.get("score"),
+                "target_type": target_type
             }
 
         return JsonResponse({
@@ -446,3 +451,7 @@ class AnalysisApi(object):
             "status": True,
             "feedback_id": feedback_id,
         }, safe=False)
+
+
+    # @api_get
+    # def get_recent_statistics(requests, ):

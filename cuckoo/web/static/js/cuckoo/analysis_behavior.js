@@ -71,7 +71,7 @@ var SummaryBehaviorDetail = function () {
             var sel = context._sel.find("ul#" + context.pid + " #cat_" + context.val);
 
             if (data["data"].length < context.limit && context.offset != 0) {
-                sel.find(".btn_action").html("<span class=\"no_results\">No more results...</span>");
+                sel.find(".btn_action").html("<span class=\"no_results\">没有更多结果...</span>");
             } else if (data["data"].length < context.limit && context.offset == 0) {
                 sel.find(".btn_action").hide();
             }

@@ -101,7 +101,7 @@ class Recent {
         data = data.tasks;
         if(Object.keys(data).length == 0){
             $("div#no_more_results").show();
-            $("div#no_more_results>span").html("no more results");
+            $("div#no_more_results>span").html("没有更多结果");
             this.empty_results = true;
         } else {
             data.forEach(function (analysis, i){

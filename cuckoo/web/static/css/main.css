@@ -4125,7 +4125,7 @@ body.cyborg .button, body.cyborg .button--lg, body.cyborg .button--sm, body.cybo
   font-family: "Roboto";
   background-color: #fafafa;
   margin-top: -20px;
-  padding-top: 80px;
+  padding-top: 20px;
 }
 .cuckoo-analysis:focus {
   outline: none;

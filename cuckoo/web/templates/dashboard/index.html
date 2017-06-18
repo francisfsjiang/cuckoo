@@ -9,9 +9,9 @@
     <div class="flex-grid__column dashboard__left" id="dashboard-tables">
 
         <h2 class="dashboard__col-title">近期分析</h2>
-        <div class="dashboard-module__lg" data-dashboard-module="processes" style="background-color: white; height: 400px">
+        <div class="dashboard-module__lg" id="recent_analysis_chart_div" style="background-color: white; height: 400px">
             <!-- 为 ECharts 准备一个具备大小（宽高）的 DOM -->
-            <div id="main" style="width: 95%;height:95%;margin: 10px;"></div>
+            <div id="recent_analysis_chart" style="width: 95%;height:95%;margin: 10px;"></div>
         </div>
 
         <!-- recent analyses -->
@@ -65,115 +65,15 @@
     <div class="flex-grid__column dashboard__right">
 
 
-        <h2 class="dashboard__col-title">恶意软件识别</h2>
+        <h2 class="dashboard__col-title">威胁态势</h2>
 
 
-        <div class="dashboard-module" data-dashboard-module="system">
-            <header class="dashboard-module__header">
-                <h4 class="align-left clearfix">
-                    系统信息
-                    <div class="pull-right">
-                        <span class="label label-free">空闲</span>
-                        <span class="label label-used">已使用</span>
-                        <span class="label label-total">总量</span>
-                    </div>
-                </h4>
-            </header>
-            <section class="dashboard-module__body free-disk-space">
-
-                <div class="dashboard-module__body--flex">
-                    <h5>磁盘空间</h5>
-                    <div class="free-disk-space__chart" id="ds-stat">
-                        <canvas></canvas>
-                        <div class="free-disk-space__legend">
-                            <p><strong data-populate="free-disk-space"></strong></p>
-                            <p data-populate="total-disk-space"></p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="dashboard-module__body--flex">
-                    <h5>CPU负载</h5>
-                    <div class="free-disk-space__chart" id="cpu-stat">
-                        <canvas></canvas>
-                        <div class="free-disk-space__legend">
-                            <p><strong data-populate="cpu-load"></strong></p>
-                            <p data-populate="total-cores"></p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="dashboard-module__body--flex">
-                    <h5>内存使用量</h5>
-                    <div class="free-disk-space__chart" id="memory-stat">
-                        <canvas></canvas>
-                        <div class="free-disk-space__legend">
-                            <p><strong data-populate="memory-used"></strong></p>
-                            <p data-populate="memory-total"></p>
-                        </div>
-                    </div>
-                </div>
-
-            </section>
-            <!--
-            <footer class="dashboard-module__footer">
-                <p><i class="fa fa-info-circle"></i> How to: <a href="http://docs.cuckoosandbox.org/en/latest/installation/host/configuration/" target="_blank">Configure Cuckoo system options</a></p>
-            </footer>
-            -->
+        <div class="dashboard-module" style="background-color: white; height: 350px" align="center">
+            <div id="recent_analysis_summary_chart" style="width: 475px;height:95%;margin: 10px;"></div>
         </div>
 
-        <div class="dashboard-module" data-dashboard-module="system">
-            <header class="dashboard-module__header">
-                <h4 class="align-left clearfix">
-                    系统信息
-                    <div class="pull-right">
-                        <span class="label label-free">空闲</span>
-                        <span class="label label-used">已使用</span>
-                        <span class="label label-total">总量</span>
-                    </div>
-                </h4>
-            </header>
-            <section class="dashboard-module__body free-disk-space">
-
-                <div class="dashboard-module__body--flex">
-                    <h5>磁盘空间</h5>
-                    <div class="free-disk-space__chart" id="ds-stat">
-                        <canvas></canvas>
-                        <div class="free-disk-space__legend">
-                            <p><strong data-populate="free-disk-space"></strong></p>
-                            <p data-populate="total-disk-space"></p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="dashboard-module__body--flex">
-                    <h5>CPU负载</h5>
-                    <div class="free-disk-space__chart" id="cpu-stat">
-                        <canvas></canvas>
-                        <div class="free-disk-space__legend">
-                            <p><strong data-populate="cpu-load"></strong></p>
-                            <p data-populate="total-cores"></p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="dashboard-module__body--flex">
-                    <h5>内存使用量</h5>
-                    <div class="free-disk-space__chart" id="memory-stat">
-                        <canvas></canvas>
-                        <div class="free-disk-space__legend">
-                            <p><strong data-populate="memory-used"></strong></p>
-                            <p data-populate="memory-total"></p>
-                        </div>
-                    </div>
-                </div>
-
-            </section>
-            <!--
-            <footer class="dashboard-module__footer">
-                <p><i class="fa fa-info-circle"></i> How to: <a href="http://docs.cuckoosandbox.org/en/latest/installation/host/configuration/" target="_blank">Configure Cuckoo system options</a></p>
-            </footer>
-            -->
+        <div class="dashboard-module" style="background-color: white; height: 300px" align="center">
+            <div id="system_status_chart" style="width: 475px;height:95%;margin: 10px;"></div>
         </div>
 
     </div>
@@ -185,93 +85,158 @@
 
 </div>
 
+    <script src="{% static "js/my_chart.js" %}"></script>
     <script type="text/javascript">
         // 基于准备好的dom，初始化echarts实例
-        var myChart = echarts.init(document.getElementById('main'));
+        var recent_analysis_chart = echarts.init(document.getElementById('recent_analysis_chart'), "shine");
+        recent_analysis_chart.setOption(recent_analysis_chart_option);
 
-        // 指定图表的配置项和数据
-        var option = {
-            title: {
-                text: '堆叠区域图'
-            },
-            tooltip : {
-                trigger: 'axis',
-                axisPointer: {
-                    type: 'cross',
-                    label: {
-                        backgroundColor: '#6a7985'
+        var recent_analysis_summary_chart = echarts.init(document.getElementById("recent_analysis_summary_chart"), "shine");
+        recent_analysis_summary_chart.setOption(recent_analysis_summary_chart_option);
+
+        var system_status_chart = echarts.init(document.getElementById("system_status_chart"));
+        system_status_chart.setOption(system_status_chart_option);
+
+        $.get('/analysis/api/statistics_month').done(function (response) {
+
+            var data = response.analysis_num;
+            recent_analysis_chart.setOption({
+                xAxis : [
+                    {
+                        type : 'category',
+                        boundaryGap : false,
+                        data : data.x
                     }
-                }
-            },
-            legend: {
-                data:['高危','中危','低危']
-            },
-            toolbox: {
-                feature: {
-                    saveAsImage: {}
-                }
-            },
-            grid: {
-                left: '3%',
-                right: '4%',
-                bottom: '15%',
-                containLabel: true
-            },
-            xAxis : [
-                {
-                    type : 'category',
-                    boundaryGap : false,
-                    data : ['周一','周二','周三','周四','周五','周六','周日']
-                }
-            ],
-            yAxis : [
-                {
-                    type : 'value'
-                }
-            ],
-            dataZoom: [
-                {
-                    id: 'dataZoomX',
-                    type: 'slider',
-                    xAxisIndex: [0],
-                    filterMode: 'filter',
-                    bottom: 10,
-                    start: 30,
-                    end: 100
-                }
-            ],
-            series : [
-                {
-                    name:'高危',
-                    type:'line',
-                    stack: '总量',
-                    areaStyle: {normal: {}},
-                    data:[120, 132, 101, 134, 90, 230, 210]
-                },
-                {
-                    name:'中危',
-                    type:'line',
-                    stack: '总量',
-                    areaStyle: {normal: {}},
-                    data:[220, 182, 191, 234, 290, 330, 310]
-                },
-                {
-                    name:'低危',
-                    type:'line',
-                    stack: '总量',
-                    areaStyle: {normal: {}},
-                    data:[150, 232, 201, 154, 190, 330, 410]
-                }
-            ]
-        };
+                ],
+                series : [
+                    {
+                        name:'高危',
+                        type:'line',
+                        stack: '总量',
+                        areaStyle: {normal: {}},
+                        data: data.high
+                    },
+                    {
+                        name:'中危',
+                        type:'line',
+                        stack: '总量',
+                        areaStyle: {normal: {}},
+                        data: data.medium
+                    },
+                    {
+                        name:'低危',
+                        type:'line',
+                        stack: '总量',
+                        areaStyle: {normal: {}},
+                        data: data.low
+                    }
+                ]
+            });
 
 
-        // 使用刚指定的配置项和数据显示图表。
-        myChart.setOption(option);
+            o = {
+                series : [
+                    {
+                        name:'今日',
+{#                        type:'pie',#}
+{#                        radius : [0, '50%'],#}
+{#                        center: ["50%", "40%"],#}
+{#                        areaStyle: {normal: {}},#}
+{#                        label: { normal: { show: false }, emphasis: { show: true }},#}
+{#                        lableLine: { normal: { show: false }, emphasis: { show: true }},#}
+                        data: [
+                            {value: response.today_num.high, name: "高危"},
+                            {value: response.today_num.medium, name: "中危"},
+                            {value: response.today_num.low, name: "低危"}
+                        ]
+                    },
+                    {
+                        name:'本周',
+                        data: [
+                            {value: response.this_week_num.high, name: "高危"},
+                            {value: response.this_week_num.medium, name: "中危"},
+                            {value: response.this_week_num.low, name: "低危"}
+                        ]
+                    },
+                    {
+                        name:'本月',
+                        data: [
+                            {value: response.this_month_num.high, name: "高危"},
+                            {value: response.this_month_num.medium, name: "中危"},
+                            {value: response.this_month_num.low, name: "低危"}
+                        ]
+                    }
+                ]
+            };
+            recent_analysis_summary_chart.setOption(o)
+        });
+
+        function to_giga_float(num) {
+            return (num*1.0/1024/1024/1024).toFixed(1)
+        }
+
+        $.get("/cuckoo/api/status").done(function (response) {
+            if(!response.status) {
+                return NULL;
+            }
+
+
+            var data = response.data;
+            var disk_avail = to_giga_float(data.diskspace.analyses.free);
+            var disk_used = to_giga_float(data.diskspace.analyses.used);
+            var mem_avail = to_giga_float(data.memavail);
+            var mem_used = to_giga_float(data.memtotal - data.memavail);
+
+            var cpu_load =  data.cpuload[0] > data.cpucount? data.cpucount: data.cpuload[0];
+            var cpu_avail = data.cpucount - cpu_load;
+
+            system_status_chart.setOption({
+                series : [
+                    {
+                        name:'磁盘使用量',
+                        data: [
+                            {value: disk_used , name: "已用"},
+                            {value: disk_avail, name: "可用"}
+                        ]
+                    },
+                    {
+                        name:'CPU使用量',
+                        data: [
+                            { value: cpu_load, name: "已用" },
+                            {value: cpu_avail, name: "可用"}
+                        ]
+                    },
+                    {
+                        name:'内存使用量',
+                        data: [
+                            {value: mem_used, name: "已用"},
+                            {value: mem_avail, name: "可用"}
+                        ]
+                    }
+                ]
+            });
+
+        });
+
+
 
         window.onresize = function () {
-            myChart.resize();
+            recent_analysis_chart.resize();
+            recent_analysis_summary_chart.resize();
+        };
+
+        function max(a, b) {
+            return a>b?a:b;
         }
+
+        var f = function () {
+            var windowH = $(window).height() * 0.4;
+            var chartH = $("#recent_analysis_chart_div").height();
+            $("#recent_analysis_chart_div").css('height', max(windowH, chartH));
+
+            window.onresize();
+        }();
+
     </script>
 
 {% endblock %}

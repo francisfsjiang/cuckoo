@@ -56,7 +56,7 @@ var Recent = function () {
             } else if (is_active("score_4-7")) {
                 this.params["score"] = "4-7";
             } else if (is_active("score_7-10")) {
-                this.params["score"] = "7-10";
+                this.params["score"] = "7-11";
             }
 
             //if(is_active('pack_pdf')) this.params['packs'].push('pdf');
@@ -177,7 +177,7 @@ var Recent = function () {
 
                     var badge_color = "default";
                     if (analysis.hasOwnProperty("score")) {
-                        if (analysis.score >= 4 && analysis.score <= 7) badge_color = "warning";else if (analysis.score > 7) badge_color = "danger";
+                        if (analysis.score >= 4 && analysis.score < 7) badge_color = "warning";else if (analysis.score >= 7) badge_color = "danger";
                     }
 
                     html += "<span class=\"badge badge-" + badge_color + "\">score: " + analysis.score + "</span>";

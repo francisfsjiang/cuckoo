@@ -56,6 +56,6 @@ urlpatterns = [
     url(r"^api/task/export_get_files/$", ExportApi.get_files),
     url(r"^api/task/feedback_send/$", AnalysisApi.feedback_send),
     url(r"^api/task/network_http_data/$", AnalysisNetworkApi.http_data),
-    # url(r"^api/analysis_num/$", AnalysisApi., ),
-    # url(r"^api/analysis_type/(?P<>\w+)/$", AnalysisApi, ),
+    url(r"^api/statistics_month/$", AnalysisApi.statistics_month),
+    # url(r"^api/statistics_week/(?P<>\w+)/$", AnalysisApi, ),
 ]

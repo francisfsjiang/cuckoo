@@ -249,8 +249,14 @@ this["HANDLEBARS_TEMPLATES"]["dashboard-table"] = Handlebars.template({"1":funct
     + "</td>\n                <td>"
     + alias3(((helper = (helper = helpers.target || (depth0 != null ? depth0.target : depth0)) != null ? helper : alias1),(typeof helper === alias2 ? helper.call(depth0,{"name":"target","hash":{},"data":data}) : helper)))
     + "</td>\n                <td>"
-    + alias3(((helper = (helper = helpers['target_type'] || (depth0 != null ? depth0['target_type'] : depth0)) != null ? helper : alias1),(typeof helper === alias2 ? helper.call(depth0,{"name":"target_type","hash":{},"data":data}) : helper)))
-    + "</td>\n                <td><span class=\"badge\">"
+    + alias3(((helper = (helper = helpers.target_type || (depth0 != null ? depth0.target_type : depth0)) != null ? helper : alias1),(typeof helper === alias2 ? helper.call(depth0,{"name":"target_type","hash":{},"data":data}) : helper)))
+
+    + "</td>\n                <td><span class=\"badge "
+    + alias3(((helper = (helper = helpers.badge_type || (depth0 != null ? depth0.badge_type : depth0)) != null ? helper : alias1),(typeof helper === alias2 ? helper.call(depth0,{"name":"badge_type","hash":{},"data":data}) : helper)))
+    + "\">"
+
+
+
     + alias3(((helper = (helper = helpers.score || (depth0 != null ? depth0.score : depth0)) != null ? helper : alias1),(typeof helper === alias2 ? helper.call(depth0,{"name":"score","hash":{},"data":data}) : helper)))
     + " / 10</span></td>\n            </tr>\n\n";
 },"3":function(depth0,helpers,partials,data) {

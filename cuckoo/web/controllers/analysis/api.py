@@ -11,8 +11,11 @@ import pymongo
 import sqlalchemy
 import tarfile
 import zipfile
+import copy
+import re
 
 from django.http import JsonResponse, HttpResponse
+from django.core.cache import caches
 from wsgiref.util import FileWrapper
 
 from cuckoo.common.exceptions import CuckooFeedbackError
@@ -30,6 +33,7 @@ from cuckoo.web.utils import (
 )
 
 db = Database()
+
 
 class AnalysisApi(object):
     @api_post
@@ -291,10 +295,10 @@ class AnalysisApi(object):
             score_min = int(score_min)
             score_max = int(score_max)
 
-            if score_min < 0 or score_min > 10:
+            if score_min < 0 or score_min > 11:
                 return json_error_response("faulty score")
 
-            if score_max < 0 or score_max > 10:
+            if score_max < 0 or score_max > 11:
                 return json_error_response("faulty score")
 
             # Because scores can be higher than 10.
@@ -304,7 +308,7 @@ class AnalysisApi(object):
 
             filters["info.score"] = {
                 "$gte": score_min,
-                "$lte": score_max,
+                "$lt": score_max,
             }
 
         if not isinstance(offset, (int, long)):
@@ -347,6 +351,14 @@ class AnalysisApi(object):
                 target_type = "Not Detected"
                 md5 = "-"
 
+            score = info.get("score")
+            if score < 4:
+                badge_type = "badge-default"
+            elif score < 7:
+                badge_type = "badge-warning"
+            else:
+                badge_type = "badge-danger"
+
             tasks[info["id"]] = {
                 "id": info["id"],
                 "target": target,
@@ -356,6 +368,7 @@ class AnalysisApi(object):
                 "completed_on": info.get("ended"),
                 "status": "reported",
                 "score": info.get("score"),
+                "badge_type": badge_type,
                 "target_type": target_type
             }
 
@@ -453,5 +466,180 @@ class AnalysisApi(object):
         }, safe=False)
 
 
-    # @api_get
-    # def get_recent_statistics(requests, ):
+    @api_get
+    def statistics_month(requests):
+        current_date = datetime.datetime(2017, 6, 18)
+
+        statictis_list = []
+        k = date_to_label(current_date)
+        v = get_day_statistics(current_date)
+        statictis_list.append((k, v))
+        for i in range(30):
+            current_date -= datetime.timedelta(days=1)
+            k = date_to_label(current_date)
+            v = get_day_statistics(current_date)
+            statictis_list.append((k, v))
+        statictis_list.reverse()
+
+        result = dict()
+        json = dict()
+        json["x"] = []
+        json["low"] = []
+        json["medium"] = []
+        json["high"] = []
+        for k, v in statictis_list:
+            json["x"].append(k)
+            json["low"].append(v["threat"]["low"])
+            json["medium"].append(v["threat"]["medium"])
+            json["high"].append(v["threat"]["high"])
+        result["analysis_num"] = json
+
+        def get_period_sum(period):
+            json = dict()
+            json["low"] = 0
+            json["medium"] = 0
+            json["high"] = 0
+            for k, v in period:
+                json["low"] += v["threat"]["low"]
+                json["medium"] += v["threat"]["medium"]
+                json["high"] += v["threat"]["high"]
+            return json
+
+        result["today_num"] = get_period_sum(statictis_list[-1:])
+        result["this_week_num"] = get_period_sum(statictis_list[-7:])
+        result["this_month_num"] = get_period_sum(statictis_list)
+
+        return JsonResponse(
+            result,
+            safe=True
+        )
+
+
+def date_to_label(date):
+    return "%d/%d" % (date.month, date.day)
+
+
+def date_to_key(date):
+    return date.strftime("%Y-%m-%d")
+
+
+STATISTICS_CACHE = dict()
+TODAY_STATISTICS_CACHE = None
+
+
+def get_day_statistics(date):
+    global TODAY_STATISTICS_CACHE
+    global STATISTICS_CACHE
+    current_date = datetime.datetime.now()
+    today_key = date_to_key(current_date)
+    key = date_to_key(date)
+
+    # today's data
+    if today_key == key:
+        if TODAY_STATISTICS_CACHE:
+            cache_time, v = TODAY_STATISTICS_CACHE
+            expire_time = datetime.datetime.now() - cache_time
+            if expire_time > datetime.timedelta(minutes=1):
+                print "Today cache expire"
+                TODAY_STATISTICS_CACHE = (current_date, gen_statistics(date))
+            else:
+                print "Today cache hit"
+        else:
+            print "Today cache miss"
+            TODAY_STATISTICS_CACHE = (current_date, gen_statistics(date))
+
+        return TODAY_STATISTICS_CACHE[1]
+
+    obj = STATISTICS_CACHE.get(key, None)
+
+    if obj:
+        return obj
+    else:
+        doc = mongo.db.statistics.find_one(
+            {"key": key}
+        )
+        if doc:
+            STATISTICS_CACHE[key] = doc["value"]
+            return doc["value"]
+        else:
+            v = gen_statistics(date)
+            STATISTICS_CACHE[key] = v
+            mongo.db.statistics.insert_one(
+                {
+                    "key": key,
+                    "value": v
+                }
+            )
+            return v
+
+
+def gen_statistics(date):
+    start_time = copy.copy(date)
+    end_time = copy.copy(date)
+    end_time += datetime.timedelta(days=1)
+
+    cursor = mongo.db.analysis.find(
+        {
+            "info.added":
+                {
+                    "$gte": start_time,
+                    "$lt": end_time,
+                }
+        },
+        ["info", "target"],
+        sort=[("_id", pymongo.DESCENDING)]
+    )
+
+    s = {
+        "threat": {
+        },
+        "type": {
+        }
+    }
+
+    for doc in cursor:
+        score = doc.get("info", {}).get("score", 0)
+        score = float(score)
+        if score < 4:
+            add_one(s["threat"], "low")
+        elif score < 7:
+            add_one(s["threat"], "medium")
+        else:
+            add_one(s["threat"], "high")
+
+        category = doc.get("info", {}).get("category")
+        if category == "file":
+            target_type = doc.get("target", {}).get("file", {}).get("type", "Not detected")
+        elif category == "url":
+            target_type = "URL"
+        elif category == "archive":
+            target_type = doc.get("target", {}).get("file", {}).get("type", "Not detected")
+        else:
+            target_type = "Not Detected"
+        type_name = parse_type(target_type)
+        add_one(s["type"], type_name)
+
+    return s
+
+
+def add_one(d, k):
+    d[k] = d.get(k, 0) + 1
+
+
+ANALYSIS_TYPE = [
+    ("ASCII",       re.compile(r".*(ASCII)")),
+    ("HTML",        re.compile(r".*(HTML)")),
+    ("JAR",         re.compile(r".*(JAR)")),
+    ("Document",    re.compile(r".*(Excel|Word|PowerPoint|PDF)")),
+    ("PE",          re.compile(r".*(PE32|executable)")),
+    ("URL",         re.compile(r".*(URL)")),
+    ("ZIP",         re.compile(r".*(Zip)")),
+]
+
+
+def parse_type(t):
+    for name, r in ANALYSIS_TYPE:
+        m = r.match(t)
+        if m:
+            return name
+    return "Other"

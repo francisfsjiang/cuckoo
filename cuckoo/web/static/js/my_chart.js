@@ -201,6 +201,10 @@ var system_status_chart_option= {
             bottom: '15%',
             containLabel: true
         },
+        tooltip : {
+            trigger: 'item',
+            formatter: "{a} <br/>{b} : {c} ({d}%)"
+        },
         legend: {
             orient: 'vertical',
             left: 'left',
@@ -220,7 +224,7 @@ var system_status_chart_option= {
         },
         color: [
             '#929192',
-            '#04a800',
+            '#48a84e',
             '#b0c4c8',
             '#d48265',
             '#91c7ae',

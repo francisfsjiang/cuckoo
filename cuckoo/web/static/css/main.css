@@ -5290,17 +5290,6 @@ body.night .app-error__message {
   color: #ffffff;
 }
 
-table.cuckoo-table .badge-default {
-  background-color: #8aa392;
-}
-table.cuckoo-table .badge-warning {
-  background-color: #edd851;
-  color: #484848;
-}
-table.cuckoo-table .badge-danger {
-  background-color: #ed5151;
-  color: #ffffff;
-}
 /*
    Copyright (C) 2016 Cuckoo Foundation.
    This file is part of Cuckoo Sandbox - http://www.cuckoosandbox.org

@@ -27,3 +27,23 @@ table.table-analysis td:nth-child(1) {
 table.table-analysis td:nth-child(2) {
     width: 200px;
 }
+table.table-analysis td:nth-child(6) {
+    width: 90px;
+}
+.badge-default {
+  background-color: #8aa392;
+}
+.badge-warning {
+  background-color: #edd851;
+  color: #484848;
+}
+.badge-danger {
+  background-color: #ed5151;
+  color: #ffffff;
+}
+.badge {
+  padding: 8px 15px;
+  color: #fff;
+  font-weight: 700;
+  border-radius: 4px;
+}

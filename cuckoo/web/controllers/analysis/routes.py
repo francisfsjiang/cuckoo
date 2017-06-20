@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Copyright (C) 2016-2017 Cuckoo Foundation.
 # This file is part of Cuckoo Sandbox - http://www.cuckoosandbox.org
 # See the file 'docs/LICENSE' for copying permission.
@@ -6,7 +7,7 @@ import re
 import datetime
 import os
 
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 from django.shortcuts import redirect, render
 from django.core.urlresolvers import reverse
 
@@ -106,14 +107,39 @@ class AnalysisRoutes:
     @staticmethod
     def recent_page(request):
 
-        doc_filter = []
+        class Options:
+            def __init__(self):
+                self.page_total = 1
+                self.page_num = 1
+                self.page_list = []
+                self.file = True
+                self.url = True
+                self.low = True
+                self.medium = True
+                self.high = True
 
+            def select_all(self):
+                self.file = self.url = self.low = self.medium = self.high = True
+
+        filter_options = Options()
+        try:
+            page_num = int(request.GET.get("page_num", 1))
+        except Exception:
+            page_num = 1
+
+        filter_options.page_num = 1
+
+        doc_filter = []
         filter_cat = []
 
         if request.GET.get("filter-file", "off") == "on":
             filter_cat.append({"info.category": "file"})
+        else:
+            filter_options.file = False
         if request.GET.get("filter-url", "off") == "on":
             filter_cat.append({"info.category": "url"})
+        else:
+            filter_options.url = False
         if len(filter_cat) == 2:
             doc_filter.append({"$or": filter_cat})
         elif len(filter_cat) == 1:
@@ -122,10 +148,16 @@ class AnalysisRoutes:
         filter_score = []
         if request.GET.get("filter-low", "off") == "on":
             filter_score.append({"info.score": {"$gte": 0, "$lt": 4}})
+        else:
+            filter_options.low = False
         if request.GET.get("filter-medium", "off") == "on":
             filter_score.append({"info.score": {"$gte": 4, "$lt": 7}})
+        else:
+            filter_options.medium = False
         if request.GET.get("filter-high", "off") == "on":
             filter_score.append({"info.score": {"$gte": 7, "$lte": 10}})
+        else:
+            filter_options.high = False
         if len(filter_score) >= 2:
             doc_filter.append({"$or": filter_score})
         elif len(filter_score) == 1:
@@ -139,14 +171,44 @@ class AnalysisRoutes:
             doc_filter = {}
         print doc_filter
 
-        cursor = mongo.db.analysis.find(
-            doc_filter,
-            ["info", "target"]
-        ).sort("info.id", pymongo.ASCENDING).limit(5)
+        if doc_filter == {}:
+            filter_options.select_all()
 
         class Analysis:
             def __init__(self):
                 pass
+
+        count = mongo.db.analysis.count(
+            doc_filter
+        )
+        print count
+
+        page_total = count/ 100
+        if page_total <= 0 or count % 100 != 0:
+            page_total += 1
+
+        if page_num > page_total:
+            raise Http404(u"请求页面不存在")
+
+        for i in range(-2, 3, 1):
+            if 1 <= page_num + i <= page_total:
+                filter_options.page_list.append(page_num + i)
+        if filter_options.page_list[0] != 1:
+            filter_options.page_list = [1, None] + filter_options.page_list
+            filter_options.last_page = page_num - 1
+        else:
+            filter_options.last_page = 1
+
+        if filter_options.page_list[-1] != page_total:
+            filter_options.page_list += [None, page_total]
+            filter_options.next_page = page_num + 1
+        else:
+            filter_options.next_page = page_total
+
+        cursor = mongo.db.analysis.find(
+            doc_filter,
+            ["info", "target"]
+        ).sort("info.id", pymongo.ASCENDING).limit(100).skip((page_num - 1) * 100)
 
         analysis_list = []
         for analysis in cursor:
@@ -184,7 +246,13 @@ class AnalysisRoutes:
             a.file_name = target_name
             a.type = target_type
             a.score = info.get("score", 0.0)
+            if a.score < 4:
+                a.level = "low"
+            elif a.score < 7:
+                a.level = "medium"
+            else:
+                a.level = "high"
             analysis_list.append(a)
 
-        return render(request, "analysis/index_page.html", context={"analysis_list": analysis_list})
+        return render(request, "analysis/index_page.html", context={"analysis_list": analysis_list, "filter_options": filter_options})
         # return render_template(request, "analysis/index_page.html", context={"analysis_list": analysis_list})

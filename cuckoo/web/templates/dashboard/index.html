@@ -186,6 +186,8 @@
             var disk_used = to_giga_float(data.diskspace.analyses.used);
             var mem_avail = to_giga_float(data.memavail);
             var mem_used = to_giga_float(data.memtotal - data.memavail);
+            console.log(mem_avail);
+            console.log(mem_used);
 
             var cpu_load =  data.cpuload[0] > data.cpucount? data.cpucount: data.cpuload[0];
             var cpu_avail = data.cpucount - cpu_load;

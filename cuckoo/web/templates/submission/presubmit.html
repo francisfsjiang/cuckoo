@@ -7,15 +7,15 @@
 
 	<header class="flex-grid__header">
 		<ul class="breadcrumbs">
-			<li class="done"><a href="#">submit file</a></li>
-			<li class="active"><a href="#">configure</a></li>
-			<li class="todo"><a href="#">analyze</a></li>
+			<li class="done"><a href="#">提交</a></li>
+			<li class="active"><a href="#">配置</a></li>
+			<li class="todo"><a href="#">分析</a></li>
 		</ul>
 		<h3>
-			<i class="fa fa-cogs"></i> Configure your Analysis
+			<i class="fa fa-cogs"></i> 配置分析
 			<div class="pull-right">
-				<button class="grey" id="reset-options"><i class="fa fa-refresh"></i> Reset</button>
-				<button id="start-analysis"><i class="fa fa-check"></i> Analyze</button>
+				<button class="grey" id="reset-options"><i class="fa fa-refresh"></i> 重置</button>
+				<button id="start-analysis"><i class="fa fa-check"></i> 提交分析</button>
 			</div>
 		</h3>
 	</header>
@@ -26,9 +26,11 @@
 			
 			<header class="flex-form__header">
 				<h4>
-					<i class="fa fa-tasks"></i> Global Advanced Options
+					<i class="fa fa-tasks"></i> 全局高级设置
+
 				</h4>
-				<small>Options you change here are globally persisted to all files in your selection.</small>
+{#				<small>Options you change here are globally persisted to all files in your selection.</small>#}
+                <small>这里的</small>
 			</header>
 
 			<form class="flex-form" id="submission-config"></form>
@@ -88,7 +90,7 @@
 
 	<footer class="flex-grid__footer">
 		<p class="footnote">
-			&copy;2010-2017 <a href="http://www.cuckoosandbox.org" target="_blank">Cuckoo Sandbox</a>
+			&copy;2010-2017 <a href="http://www.bupt.edu.cn" target="_blank">北京邮电大学 网络空间安全学院</a>
 		</p>
 		<div class="logo">
 			<img src="{% static "graphic/cuckoo_inverse.png" %}" alt="Cuckoo Malware Analysis Sandbox" />

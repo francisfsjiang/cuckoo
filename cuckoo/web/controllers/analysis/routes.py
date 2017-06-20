@@ -9,6 +9,7 @@ from django.shortcuts import redirect
 from django.core.urlresolvers import reverse
 
 from cuckoo.core.database import Database
+from cuckoo.common.mongo import mongo
 from cuckoo.web.controllers.analysis.export.export import ExportController
 from cuckoo.web.controllers.analysis.analysis import AnalysisController
 from cuckoo.web.utils import view_error, render_template
@@ -95,3 +96,23 @@ class AnalysisRoutes:
         return render_template(request, "submission/reboot.html",
                                task_id=task_id, task_obj=task_obj,
                                baseurl=request.build_absolute_uri("/")[:-1])
+
+
+    @staticmethod
+    def recent_page(request):
+
+        filter = {
+
+        }
+
+        request.GET.get("filter-file", "off")
+
+        mongo.db.statistics.insert_one(
+            {
+                "key": key,
+                "value": v
+            }
+        )
+
+
+        return render_template(request, "analysis/index_page.html")

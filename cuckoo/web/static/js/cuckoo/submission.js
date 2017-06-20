@@ -2865,7 +2865,7 @@ $(function () {
 			e.preventDefault();
 
 			// $(".page-freeze").addClass('in');
-			CuckooWeb.toggle_page_freeze(true, "We're processing your submission... This could take a few seconds.");
+			CuckooWeb.toggle_page_freeze(true, "提交正在处理，请等待。");
 
 			var json = analysis_ui.getData({
 				'submit_id': window.submit_id
@@ -2888,13 +2888,13 @@ $(function () {
 						window.location = '/submit/post/' + data.submit_id;
 					} else {
 						// alert("Submission failed: " + data.message);
-						CuckooWeb.error_page_freeze("Something went wrong! please try again.");
+						CuckooWeb.error_page_freeze("出现问题，请重试。");
 					}
 				},
 				error: function error() {
 					console.log(arguments);
 					// alert('submission failed! see the console for details.');
-					CuckooWeb.error_page_freeze("Something went wrong! please try again.");
+					CuckooWeb.error_page_freeze("出现问题，请重试。");
 				}
 			});
 		});

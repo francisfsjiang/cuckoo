@@ -6030,6 +6030,13 @@ table.cuckoo-table .badge.success, table.cuckoo-table__fullscreen .badge.success
   background-color: #94BE69;
 }
 
+.dashboard-module__body table.cuckoo-table td:nth-child(1) {
+  width: 75px;
+}
+.dashboard-module__body table.cuckoo-table td:nth-child(2) {
+  width: 105px;
+}
+
 .network-display__outer {
   border-radius: 5px;
   background-color: #fff;

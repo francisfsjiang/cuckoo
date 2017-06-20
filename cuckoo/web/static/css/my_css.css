@@ -19,3 +19,11 @@ input[type="checkbox"]:checked + .btn-group > label span:first-child {
 input[type="checkbox"]:checked + .btn-group > label span:last-child {
     display: none;
 }
+
+
+table.table-analysis td:nth-child(1) {
+    width: 80px;
+}
+table.table-analysis td:nth-child(2) {
+    width: 200px;
+}

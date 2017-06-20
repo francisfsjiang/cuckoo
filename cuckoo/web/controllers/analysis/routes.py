@@ -3,10 +3,15 @@
 # See the file 'docs/LICENSE' for copying permission.
 
 import re
+import datetime
+import os
 
 from django.http import HttpResponse
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
 from django.core.urlresolvers import reverse
+
+import bson
+import pymongo
 
 from cuckoo.core.database import Database
 from cuckoo.common.mongo import mongo
@@ -101,18 +106,85 @@ class AnalysisRoutes:
     @staticmethod
     def recent_page(request):
 
-        filter = {
+        doc_filter = []
 
-        }
+        filter_cat = []
 
-        request.GET.get("filter-file", "off")
+        if request.GET.get("filter-file", "off") == "on":
+            filter_cat.append({"info.category": "file"})
+        if request.GET.get("filter-url", "off") == "on":
+            filter_cat.append({"info.category": "url"})
+        if len(filter_cat) == 2:
+            doc_filter.append({"$or": filter_cat})
+        elif len(filter_cat) == 1:
+            doc_filter.append(filter_cat[0])
 
-        mongo.db.statistics.insert_one(
-            {
-                "key": key,
-                "value": v
-            }
-        )
+        filter_score = []
+        if request.GET.get("filter-low", "off") == "on":
+            filter_score.append({"info.score": {"$gte": 0, "$lt": 4}})
+        if request.GET.get("filter-medium", "off") == "on":
+            filter_score.append({"info.score": {"$gte": 4, "$lt": 7}})
+        if request.GET.get("filter-high", "off") == "on":
+            filter_score.append({"info.score": {"$gte": 7, "$lte": 10}})
+        if len(filter_score) >= 2:
+            doc_filter.append({"$or": filter_score})
+        elif len(filter_score) == 1:
+            doc_filter.append(filter_score[0])
 
+        if len(doc_filter) == 2:
+            doc_filter = {"$and": doc_filter}
+        elif len(doc_filter) == 1:
+            doc_filter = doc_filter[0]
+        else:
+            doc_filter = {}
+        print doc_filter
 
-        return render_template(request, "analysis/index_page.html")
+        cursor = mongo.db.analysis.find(
+            doc_filter,
+            ["info", "target"]
+        ).sort("info.id", pymongo.ASCENDING).limit(5)
+
+        class Analysis:
+            def __init__(self):
+                pass
+
+        analysis_list = []
+        for analysis in cursor:
+
+            info = analysis.get("info", {})
+            target = analysis.get("target", {})
+            category = info.get("category")
+            if category == "file":
+                f = target.get("file", {})
+                if f.get("name"):
+                    target_name = os.path.basename(f["name"])
+                else:
+                    target_name = None
+                target_type = f.get("type", "Not detected")
+                md5 = f.get("md5") or "-"
+            elif category == "url":
+                target_name = target.get("url", "-")
+                target_type = "URL"
+                md5 = "-"
+            elif category == "archive":
+                target_name = target.get("human", "-")
+                target_type = "Archive"
+                md5 = "-"
+            else:
+                target_name = "-"
+                target_type = "Not Detected"
+                md5 = "-"
+
+            a = Analysis()
+            a.id = info.get("id", "-")
+            a.date = info.get("added", "-")
+            if type(a.date) == datetime.datetime:
+                a.date = a.date.isoformat(' ')
+            a.md5 = md5
+            a.file_name = target_name
+            a.type = target_type
+            a.score = info.get("score", 0.0)
+            analysis_list.append(a)
+
+        return render(request, "analysis/index_page.html", context={"analysis_list": analysis_list})
+        # return render_template(request, "analysis/index_page.html", context={"analysis_list": analysis_list})

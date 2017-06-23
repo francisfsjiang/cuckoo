@@ -28,6 +28,7 @@ urlpatterns = [
     url(r"^latest/$", views.latest_report),
     url(r"^remove/(?P<task_id>\d+)/$", views.remove),
     url(r"^chunk/(?P<task_id>\d+)/(?P<pid>\d+)/(?P<pagenum>\d+)/$", views.chunk),
+    url(r"^page/chunk/(?P<task_id>\d+)/(?P<pid>\d+)/(?P<pagenum>\d+)/$", views.chunk),
     url(r"^filtered/(?P<task_id>\d+)/(?P<pid>\d+)/(?P<category>\w+)/$", views.filtered_chunk),
     url(r"^search/(?P<task_id>\d+)/$", views.search_behavior),
     url(r"^search/$", views.search),

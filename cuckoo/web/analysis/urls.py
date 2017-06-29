@@ -14,7 +14,8 @@ from cuckoo.web.controllers.analysis.routes import AnalysisRoutes
 from cuckoo.web.controllers.submission.routes import SubmissionRoutes
 
 urlpatterns = [
-    url(r"^$", AnalysisRoutes.recent, name="analysis/recent"),
+    # url(r"^$", AnalysisRoutes.recent, name="analysis/recent"),
+    url(r"^$", AnalysisRoutes.recent_page, name="analysis/recent"),
     url(r"^(?P<task_id>\d+)/$", AnalysisRoutes.redirect_default, name="analysis/redirect_default"),
     url(r"^(?P<task_id>\d+)/export/$", AnalysisRoutes.export, name="analysis/export"),
     url(r"^(?P<task_id>\d+)/reboot/$", SubmissionRoutes.reboot, name="analysis/reboot"),
@@ -28,7 +29,6 @@ urlpatterns = [
     url(r"^latest/$", views.latest_report),
     url(r"^remove/(?P<task_id>\d+)/$", views.remove),
     url(r"^chunk/(?P<task_id>\d+)/(?P<pid>\d+)/(?P<pagenum>\d+)/$", views.chunk),
-    url(r"^page/chunk/(?P<task_id>\d+)/(?P<pid>\d+)/(?P<pagenum>\d+)/$", views.chunk),
     url(r"^filtered/(?P<task_id>\d+)/(?P<pid>\d+)/(?P<category>\w+)/$", views.filtered_chunk),
     url(r"^search/(?P<task_id>\d+)/$", views.search_behavior),
     url(r"^search/$", views.search),
@@ -58,5 +58,4 @@ urlpatterns = [
     url(r"^api/task/feedback_send/$", AnalysisApi.feedback_send),
     url(r"^api/task/network_http_data/$", AnalysisNetworkApi.http_data),
     url(r"^api/statistics_month/$", AnalysisApi.statistics_month),
-    url(r"^page/$", AnalysisRoutes.recent_page, name="analysis/recent"),
 ]

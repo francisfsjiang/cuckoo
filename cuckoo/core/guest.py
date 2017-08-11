@@ -56,20 +56,23 @@ def analyzer_zipfile(platform, monitor):
             archive_name = os.path.join(archive_root, name)
             zip_file.write(path, archive_name)
 
-    # Include the chosen monitoring component.
+    # Include the chosen monitoring component and any additional files.
     if platform == "windows":
         dirpath = cwd("monitor", monitor)
 
-        # Sometimes we might get a file instead of a symbolic link, in that
-        # case we follow the semi-"symbolic link" manually.
+        # Generally speaking we should no longer be getting symbolic links for
+        # "latest" anymore, so in the case of a file; follow it.
         if os.path.isfile(dirpath):
             monitor = os.path.basename(open(dirpath, "rb").read().strip())
             dirpath = cwd("monitor", monitor)
 
         for name in os.listdir(dirpath):
-            path = os.path.join(dirpath, name)
-            archive_name = os.path.join("/bin", name)
-            zip_file.write(path, archive_name)
+            zip_file.write(
+                os.path.join(dirpath, name), os.path.join("bin", name)
+            )
+
+        # Dump compiled "dumpmem" Yara rules for zer0m0n usage.
+        zip_file.write(cwd("stuff", "dumpmem.yarac"), "bin/rules.yarac")
 
     zip_file.close()
     data = zip_data.getvalue()
@@ -336,16 +339,26 @@ class GuestManager(object):
     def determine_analyzer_path(self):
         """Determine the path of the analyzer. Basically creating a temporary
         directory in the systemdrive, i.e., C:\\."""
-        systemdrive = "%s\\" % self.environ["SYSTEMDRIVE"]
+        systemdrive = self.determine_system_drive()
 
         options = parse_options(self.options["options"])
         if options.get("analpath"):
-            dirpath = "%s\\%s" % (systemdrive, options["analpath"])
+            dirpath = systemdrive + options["analpath"]
             r = self.post("/mkdir", data={"dirpath": dirpath})
             self.analyzer_path = dirpath
         else:
             r = self.post("/mkdtemp", data={"dirpath": systemdrive})
             self.analyzer_path = r.json()["dirpath"]
+
+    def determine_system_drive(self):
+        if self.platform == "windows":
+            return "%s/" % self.environ["SYSTEMDRIVE"]
+        return "/"
+
+    def determine_temp_path(self):
+        if self.platform == "windows":
+            return self.environ["TEMP"]
+        return "/tmp"
 
     def upload_analyzer(self, monitor):
         """Upload the analyzer to the Virtual Machine."""
@@ -461,7 +474,7 @@ class GuestManager(object):
         if options["category"] == "file" or options["category"] == "archive":
             data = {
                 "filepath": os.path.join(
-                    self.environ["TEMP"], options["file_name"]
+                    self.determine_temp_path(), options["file_name"]
                 ),
             }
             files = {
@@ -471,7 +484,7 @@ class GuestManager(object):
 
         if "execpy" in features:
             data = {
-                "filepath": "%s\\analyzer.py" % self.analyzer_path,
+                "filepath": "%s/analyzer.py" % self.analyzer_path,
                 "async": "yes",
                 "cwd": self.analyzer_path,
             }

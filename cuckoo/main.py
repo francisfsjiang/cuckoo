@@ -17,7 +17,7 @@ from cuckoo.apps import (
     fetch_community, submit_tasks, process_tasks, process_task_range,
     cuckoo_rooter, cuckoo_api, cuckoo_distributed, cuckoo_distributed_instance,
     cuckoo_clean, cuckoo_dnsserve, cuckoo_machine, import_cuckoo,
-    migrate_database, migrate_cwd
+    migrate_database, migrate_cwd, cuckoo_clean_storage
 )
 from cuckoo.common.config import read_kv_conf
 from cuckoo.common.exceptions import CuckooCriticalError
@@ -265,6 +265,15 @@ def clean():
     """Clean the CWD and associated databases."""
     try:
         cuckoo_clean()
+    except KeyboardInterrupt:
+        print(yellow("Aborting cleaning up of your CWD.."))
+
+@main.command()
+@click.option("-d", "--days_before", help=u"Clean how many days data.")
+def clean_storage(days_before):
+    """Clean the CWD and associated databases."""
+    try:
+        cuckoo_clean_storage(days_before=int(days_before))
     except KeyboardInterrupt:
         print(yellow("Aborting cleaning up of your CWD.."))
 

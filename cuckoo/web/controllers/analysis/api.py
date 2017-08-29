@@ -322,6 +322,7 @@ class AnalysisApi(object):
             filters, ["info", "target"],
             sort=[("info.id", pymongo.DESCENDING)]
         ).limit(limit).skip(offset)
+        print filters
 
         tasks = {}
         for row in cursor:
@@ -371,7 +372,7 @@ class AnalysisApi(object):
                 "badge_type": badge_type,
                 "target_type": target_type
             }
-
+        print tasks
         return JsonResponse({
             "tasks": sorted(
                 tasks.values(), key=lambda task: task["id"], reverse=True

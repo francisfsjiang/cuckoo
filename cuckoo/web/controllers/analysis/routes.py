@@ -210,7 +210,7 @@ class AnalysisRoutes:
             ["info", "target"]
         ).sort("info.id", pymongo.ASCENDING).limit(100).skip((page_num - 1) * 100)
 
-        analysis_list = []
+        analysis_list = {}
         for analysis in cursor:
 
             info = analysis.get("info", {})
@@ -252,7 +252,9 @@ class AnalysisRoutes:
                 a.level = "medium"
             else:
                 a.level = "high"
-            analysis_list.append(a)
+            analysis_list[a.id] = a
+        analysis_list = analysis_list.values()
+        analysis_list.sort(lambda a, b : a.id < b.id)
 
         return render(request, "analysis/index_page.html", context={"analysis_list": analysis_list, "filter_options": filter_options})
         # return render_template(request, "analysis/index_page.html", context={"analysis_list": analysis_list})

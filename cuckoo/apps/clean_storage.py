@@ -30,6 +30,8 @@ def cuckoo_clean_storage(days_before):
     session = db.Session()
     try:
         tasks = session.query(Task).filter(Task.started_on).order_by(Task.id).all()
+        for task in tasks:
+            print(task)
     except Exception as e:
         print("error")
     else:

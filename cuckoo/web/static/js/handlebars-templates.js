@@ -82,9 +82,9 @@ this["HANDLEBARS_TEMPLATES"]["control-toggle-list"] = Handlebars.template({"1":f
 },"6":function(depth0,helpers,partials,data) {
     return "checked";
 },"8":function(depth0,helpers,partials,data) {
-    return "		<li class=\"toggle-list-seperator\">\n			<p>Extra options <span><a href=\"https://cuckoo.sh/docs/usage/packages.html\" target=\"_blank\">What can I use?</a></span></p>\n		</li>\n		<li class=\"flex-form__table extra-options\">\n			<table>\n				<thead>\n					<tr>\n						<th>name</th>\n						<th>value</th>\n					</tr>\n				</thead>\n				<tfoot>\n					<tr>\n						<td><input type=\"text\" placeholder=\"name\" name=\"new-key\" /></td>\n						<td><input type=\"text\" placeholder=\"value\" name=\"new-value\" /></td>\n					</tr>\n				</tfoot>\n				<tbody></tbody>\n			</table>\n		</li>\n\n";
+    return "		<li class=\"toggle-list-seperator\">\n			<p>额外选项</p>\n		</li>\n		<li class=\"flex-form__table extra-options\">\n			<table>\n				<thead>\n					<tr>\n						<th>name</th>\n						<th>value</th>\n					</tr>\n				</thead>\n				<tfoot>\n					<tr>\n						<td><input type=\"text\" placeholder=\"name\" name=\"new-key\" /></td>\n						<td><input type=\"text\" placeholder=\"value\" name=\"new-value\" /></td>\n					</tr>\n				</tfoot>\n				<tbody></tbody>\n			</table>\n		</li>\n\n";
 },"10":function(depth0,helpers,partials,data) {
-    return "	<p class=\"description\">To add a new option, type the option name + value and hit enter. it will add itself to the list. Remove an item by clicking the right remove icon.</p>\n";
+    return "	<p class=\"description\">要添加选项，输入选项名称和值，并单击回车。要删除请点击右边的删除按钮</p>\n";
 },"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data,blockParams,depths) {
     var stack1, helper;
 
@@ -275,7 +275,7 @@ this["HANDLEBARS_TEMPLATES"]["dndupload"] = Handlebars.template({"compiler":[6,"
 
   return "<div class=\"dndupload__v2\" id=\""
     + this.escapeExpression(((helper = (helper = helpers.uid || (depth0 != null ? depth0.uid : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0,{"name":"uid","hash":{},"data":data}) : helper)))
-    + "\">\n\n    <form id=\"uploader\" action=\"/submit/api/presubmit\" method=\"POST\" enctype=\"multipart/form-data\">\n        <div id=\"container\">\n\n            <input type=\"file\" name=\"files[]\" id=\"file\" class=\"holder_input\" data-multiple-caption=\"{count} files selected\" multiple=\"\">\n            <label for=\"file\" id=\"info\">\n\n                <span class=\"text-idle\">\n                    <strong>Drag your file here or <em>click to select a file.</em></strong>\n                </span>\n\n                <span class=\"text-hovering\">\n                    <strong>Drop your file here.</strong>\n                </span>\n\n                <span class=\"text-dropped\">\n                    <strong>One moment, we're uploading!</strong>\n                    <small>You'll be redirected automatically after we're done.</small>\n                </span>\n\n                <span class=\"text-done\">\n                    <strong>All good!</strong>\n                    <small>One second while we redirect you.</small>\n                </span>\n\n                <span class=\"text-error\">\n                    <strong>Something went wrong!</strong>\n                    <small>The server returned an error. Please check our file compatibility list with the file you're trying to upload or try again.</small>\n                    <small>If the problem persists, send us a feedback report.</small>\n                </span> \n\n            </label>\n\n            <button type=\"submit\" class=\"holder_button\">Upload</button>\n\n            <progress id=\"uploadprogress\" min=\"0\" max=\"100\" value=\"0\">0</progress>\n        </div>\n    </form>\n\n    <div class=\"alternate-progress\"></div>\n    \n</div>\n\n<p id=\"filereader\">File API &amp; FileReader API not supported</p>\n<p id=\"formdata\">XHR2's FormData is not supported</p>\n<p id=\"progress\">XHR2's upload progress isn't supported</p>";
+    + "\">\n\n    <form id=\"uploader\" action=\"/submit/api/presubmit\" method=\"POST\" enctype=\"multipart/form-data\">\n        <div id=\"container\">\n\n            <input type=\"file\" name=\"files[]\" id=\"file\" class=\"holder_input\" data-multiple-caption=\"{count} files selected\" multiple=\"\">\n            <label for=\"file\" id=\"info\">\n\n                <span class=\"text-idle\">\n                    <strong>拖拽文件到这里来，或者<em>点击来提交.</em></strong>\n                </span>\n\n                <span class=\"text-hovering\">\n                    <strong>Drop your file here.</strong>\n                </span>\n\n                <span class=\"text-dropped\">\n                    <strong>One moment, we're uploading!</strong>\n                    <small>You'll be redirected automatically after we're done.</small>\n                </span>\n\n                <span class=\"text-done\">\n                    <strong>完成</strong>\n                    <small>请等待跳转.</small>\n                </span>\n\n                <span class=\"text-error\">\n                    <strong>Something went wrong!</strong>\n                    <small>The server returned an error. Please check our file compatibility list with the file you're trying to upload or try again.</small>\n                    <small>If the problem persists, send us a feedback report.</small>\n                </span> \n\n            </label>\n\n            <button type=\"submit\" class=\"holder_button\">Upload</button>\n\n            <progress id=\"uploadprogress\" min=\"0\" max=\"100\" value=\"0\">0</progress>\n        </div>\n    </form>\n\n    <div class=\"alternate-progress\"></div>\n    \n</div>\n\n<p id=\"filereader\">File API &amp; FileReader API not supported</p>\n<p id=\"formdata\">XHR2's FormData is not supported</p>\n<p id=\"progress\">XHR2's upload progress isn't supported</p>";
 },"useData":true});
 this["HANDLEBARS_TEMPLATES"]["dndupload_simple"] = Handlebars.template({"1":function(depth0,helpers,partials,data) {
     var stack1, helper;
@@ -390,7 +390,7 @@ this["HANDLEBARS_TEMPLATES"]["submission-file-detail"] = Handlebars.template({"1
 this["HANDLEBARS_TEMPLATES"]["submission-selection-list"] = Handlebars.template({"1":function(depth0,helpers,partials,data) {
     var stack1;
 
-  return "					<span class=\"extension-select\">\n						<select class=\"none-selected\">\n							<option disabled selected>Extension</option>\n"
+  return "					<span class=\"extension-select\">\n						<select class=\"none-selected\">\n							<option disabled selected>过滤文件类型</option>\n"
     + ((stack1 = helpers.each.call(depth0,(depth0 != null ? depth0.extensions : depth0),{"name":"each","hash":{},"fn":this.program(2, data, 0),"inverse":this.noop,"data":data})) != null ? stack1 : "")
     + "						</select>\n					</span>\n";
 },"2":function(depth0,helpers,partials,data) {
@@ -451,13 +451,13 @@ this["HANDLEBARS_TEMPLATES"]["submission-selection-list"] = Handlebars.template(
     + this.escapeExpression(this.lambda((depth0 != null ? depth0.relapath : depth0), depth0))
     + "\n";
 },"23":function(depth0,helpers,partials,data) {
-    return "		<p class=\"description\">These files you selected will be included in your analysis. When ready, click 'analyze' next to the page title.</p>\n";
+    return "		<p class=\"description\">这些文件将被加入分析，确定后按提交分析按钮来提交。</p>\n";
 },"25":function(depth0,helpers,partials,data) {
-    return "		<p class=\"description\">You have to select some files before you can analyze. To select, mark the checkboxes before the file/directory names.</p>\n";
+    return "		<p class=\"description\">在进行分析之前，需要选择一些文件。请在文件/文件夹前的多选框选中。</p>\n";
 },"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
     var stack1;
 
-  return "<div class=\"flex-form\">\n\n	<header class=\"flex-form__header\">\n		<h4><i class=\"fa fa-list\"></i> Selection</h4>\n	</header>\n\n	<ul class=\"flex-static__summary\" id=\"selection-overview\">\n\n		<li>\n			<div class=\"flex-form__simple-inline no-icon\">\n				<label for=\"search-selection\"><i class=\"fa fa-search\"></i></label>\n				<input type=\"text\" name=\"search-selection\" id=\"search-selection\" placeholder=\"Search selection\" />\n\n"
+  return "<div class=\"flex-form\">\n\n	<header class=\"flex-form__header\">\n		<h4><i class=\"fa fa-list\"></i> 选项</h4>\n	</header>\n\n	<ul class=\"flex-static__summary\" id=\"selection-overview\">\n\n		<li>\n			<div class=\"flex-form__simple-inline no-icon\">\n				<label for=\"search-selection\"><i class=\"fa fa-search\"></i></label>\n				<input type=\"text\" name=\"search-selection\" id=\"search-selection\" placeholder=\"搜索选项\" />\n\n"
     + ((stack1 = helpers['if'].call(depth0,(depth0 != null ? depth0.extensions : depth0),{"name":"if","hash":{},"fn":this.program(1, data, 0),"inverse":this.noop,"data":data})) != null ? stack1 : "")
     + "\n			</div>\n		</li>\n\n"
     + ((stack1 = helpers.each.call(depth0,(depth0 != null ? depth0.selection : depth0),{"name":"each","hash":{},"fn":this.program(4, data, 0),"inverse":this.noop,"data":data})) != null ? stack1 : "")

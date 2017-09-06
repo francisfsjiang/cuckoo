@@ -26,25 +26,25 @@ var default_analysis_options = {
 var submission_options = [
 	{
 		name: 'enable-injection',
-		label: 'Enable Injection',
+		label: '开启注入',
 		description: 'Enable behavioral analysis.'
 	},
 	{
 		name: 'process-memory-dump',
-		label: 'Process Memory Dump'
+		label: '保存内存镜像'
 	},
 	{
 		name: 'full-memory-dump',
-		label: 'Full Memory Dump',
-		description: 'If Volatility has been enabled, process an entire VM memory dump with it.'
+		label: '保存系统内存镜像'
+		// description: 'If Volatility has been enabled, process an entire VM memory dump with it.'
 	},
 	{
 		name: 'enforce-timeout',
-		label: 'Enforce Timeout'
+		label: '超时后强制结束'
 	},
 	{
 		name: 'simulated-human-interaction',
-		label: 'Enable Simulated Human Interaction',
+		label: '开启模拟操作',
 		selected: true
 	}
 ];
@@ -418,7 +418,7 @@ $(function() {
 
 					var pkg = new this.SimpleSelect({
 						name: 'package',
-						title: 'Package',
+						title: '样本文件类型',
 						doc_link: 'https://cuckoo.sh/docs/usage/packages.html',
 						default: default_analysis_options['package'],
 						options: default_package_selection_options
@@ -426,7 +426,7 @@ $(function() {
 
 					var priority = new this.TopSelect({
 						name: 'priority',
-						title: 'Priority',
+						title: '优先级',
 						default: default_analysis_options['priority'],
 						options: [
 							{ name: 'low', value: 1, className: 'priority-s' },
@@ -437,7 +437,7 @@ $(function() {
 
 					var config = new this.ToggleList({
 						name: 'options',
-						title: 'Options',
+						title: '选项',
 						default: default_analysis_options['options'],
 						extraOptions: true,
 						options: submission_options
@@ -445,14 +445,14 @@ $(function() {
 
 					var machine = new this.SimpleSelect({
 						name: 'machine',
-						title: 'Machine',
+						title: '虚拟机',
 						default: default_analysis_options['machine'],
 						options: default_analysis_options['available_machines']
 					});
 
 					var timeout = new this.TopSelect({
 						name: 'timeout',
-						title: 'Timeout',
+						title: '超时',
 						default: default_analysis_options['timeout'],
 						units: 'seconds',
 						options: [

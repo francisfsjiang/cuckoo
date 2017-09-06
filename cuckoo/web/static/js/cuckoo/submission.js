@@ -2388,7 +2388,7 @@ var default_analysis_options = {
 var submission_options = [{
 	name: 'enable-injection',
     label: '开启注入',
-	description: 'Enable behavioral analysis.'
+	description: '开启注入分析'
 }, {
 	name: 'process-memory-dump',
     label: '保存内存镜像'

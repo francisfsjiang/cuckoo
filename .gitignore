@@ -46,3 +46,4 @@ cuckoo/web/manage.py
 
 cwd/*
 !cwd/conf/
+cwd_old/

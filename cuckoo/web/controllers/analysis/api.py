@@ -318,11 +318,36 @@ class AnalysisApi(object):
             return json_error_response("invalid limit")
 
         # TODO Use a mongodb abstraction class once there is one.
-        cursor = mongo.db.analysis.find(
-            filters, ["info", "target"],
-            sort=[("info.id", pymongo.DESCENDING)]
-        ).limit(limit).skip(offset)
-        print filters
+        # cursor = mongo.db.analysis.find(
+        #     filters, ["info", "target"],
+        #     sort=[("info.id", pymongo.DESCENDING)]
+        # ).limit(limit).skip(offset)
+
+        pipeline = [
+            {
+                "$project":
+                    {
+                        "info": 1,
+                        "target": 1
+                    }
+            },
+            {
+                "$match":
+                    filters
+            },
+            {
+                "$group": {
+                    "_id": {"id": "$info.id"},
+                    "info": {"$last": "$info"},
+                    "target": {"$last": "$target"}
+                }
+            },
+            # {"$sort": {"_id.id": 1}},
+            {"$limit": limit},
+
+
+        ]
+        cursor = mongo.db.analysis.aggregate(pipeline)
 
         tasks = {}
         for row in cursor:
@@ -360,7 +385,7 @@ class AnalysisApi(object):
             else:
                 badge_type = "badge-danger"
 
-            tasks[info["id"]] = {
+            tasks[len(tasks)] = {
                 "id": info["id"],
                 "target": target,
                 "md5": md5,
@@ -372,7 +397,6 @@ class AnalysisApi(object):
                 "badge_type": badge_type,
                 "target_type": target_type
             }
-        print tasks
         return JsonResponse({
             "tasks": sorted(
                 tasks.values(), key=lambda task: task["id"], reverse=True

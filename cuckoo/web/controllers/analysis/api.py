@@ -513,10 +513,11 @@ class AnalysisApi(object):
         json["medium"] = []
         json["high"] = []
         for k, v in statictis_list:
-            json["x"].append(k)
-            json["low"].append(v["threat"]["low"])
-            json["medium"].append(v["threat"]["medium"])
-            json["high"].append(v["threat"]["high"])
+            if "threat" in v:
+                json["x"].append(k)
+                json["low"].append(v["threat"]["low"])
+                json["medium"].append(v["threat"]["medium"])
+                json["high"].append(v["threat"]["high"])
         result["analysis_num"] = json
 
         def get_period_sum(period):

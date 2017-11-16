@@ -124,7 +124,11 @@ def wait_for_vm_ready(vm_name):
             '"c:\\Windows\\system32\\ipconfig.exe"',
             ]
         cmd = " ".join(cmd)
-        ret, out = execute(cmd, shell=True)
+        try:
+            ret, out = execute(cmd, shell=True)
+        except Exception as e:
+            info_print(e)
+            ret, out = 1, None
         info_print("Waiting for VM. ", ret, out)
 
     print("Wait for vm, finish")

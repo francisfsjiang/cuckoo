@@ -308,7 +308,7 @@ class File(object):
 
         return "", ""
 
-    def get_yara(self, category="binaries"):
+    def get_yara(self, category="binaries", externals=None):
         """Get Yara signatures matches.
         @return: matched Yara signatures.
         """
@@ -327,10 +327,8 @@ class File(object):
             )
             return []
 
-        results = []
-        for match in File.yara_rules[category].match(self.file_path):
-            if type(match) == str:
-                continue
+        results, rule = [], File.yara_rules[category]
+        for match in rule.match(self.file_path, externals=externals):
             strings, offsets = set(), {}
             for _, key, value in match.strings:
                 strings.add(base64.b64encode(value))
@@ -418,6 +416,18 @@ class Archive(object):
         shutil.copyfileobj(self.z.open(filename), open(filepath, "wb"))
         return File(filepath, temporary=True)
 
+class Buffer(object):
+    """A brief wrapper around string buffers for quick Yara rule matching."""
+
+    def __init__(self, buffer):
+        self.buffer = buffer
+
+    def get_yara_quick(self, category, externals=None):
+        results, rule = [], File.yara_rules[category]
+        for match in rule.match(data=self.buffer, externals=externals):
+            results.append(match.rule)
+        return results
+
 class YaraMatch(object):
     def __init__(self, match, category=None):
         self.name = match["name"]
@@ -426,13 +436,19 @@ class YaraMatch(object):
         self.offsets = match["offsets"]
         self.category = category
 
-        self.strings = []
+        self._strings = []
         for s in match["strings"]:
-            self.strings.append(s.decode("base64"))
+            self._strings.append(s.decode("base64"))
 
     def string(self, identifier, index=0):
         off, idx = self.offsets[identifier][index]
-        return self.strings[idx]
+        return self._strings[idx]
+
+    def strings(self, identifier):
+        ret = []
+        for off, idx in self.offsets[identifier]:
+            ret.append(self._strings[idx])
+        return ret
 
 class ExtractedMatch(object):
     def __init__(self, match):

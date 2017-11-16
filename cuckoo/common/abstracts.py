@@ -879,6 +879,18 @@ class Signature(object):
                                  regex=regex,
                                  all=all)
 
+    def check_command_line(self, pattern, regex=False, all=False):
+        """Checks for a command line being opened.
+        @param pattern: string or expression to check for.
+        @param regex: boolean representing if the pattern is a regular
+                      expression or not and therefore should be compiled.
+        @return: boolean with the result of the check.
+        """
+        return self._check_value(pattern=pattern,
+                                 subject=self.get_summary("command_line"),
+                                 regex=regex,
+                                 all=all)
+
     def check_key(self, pattern, regex=False, actions=None, pid=None,
                   all=False):
         """Checks for a registry key being accessed.
@@ -1289,6 +1301,9 @@ class ProtocolHandler(object):
 class Extractor(object):
     """One piece in a series of recursive extractors & unpackers."""
     yara_rules = []
+    # Minimum and maximum supported version in Cuckoo.
+    minimum = None
+    maximum = None
 
     @classmethod
     def init_once(cls):
@@ -1300,5 +1315,20 @@ class Extractor(object):
     def handle_yara(self, filepath, match):
         raise NotImplementedError
 
+    def push_command_line(self, cmdline):
+        self.parent.push_command_line(cmdline)
+
+    def push_script(self, process, command):
+        self.parent.push_script(process, command)
+
+    def push_script_recursive(self, command):
+        self.parent.push_script_recursive(command)
+
     def push_shellcode(self, sc):
         self.parent.push_shellcode(sc)
+
+    def push_blob(self, blob, category, externals, info=None):
+        self.parent.push_blob(blob, category, externals, info)
+
+    def push_blob_noyara(self, blob, category, info=None):
+        self.parent.push_blob_noyara(blob, category, info)

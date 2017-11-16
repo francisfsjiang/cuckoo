@@ -33,7 +33,7 @@ local/
 .eggs/
 
 # Cuckoo package stuff
-cuckoo/data-private/.cwd
+cuckoo/private/.cwd
 
 # Frontend compilation services
 node_modules/

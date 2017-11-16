@@ -24,7 +24,9 @@ class Scripting(object):
         try:
             return shlex.split(cmdline, posix=False)
         except ValueError:
-            log.warning("Error parsing command-line: %s", cmdline)
+            log.warning(
+                "Error parsing command-line: %s", cmdline.encode("utf8")
+            )
             return []
 
     def match_command(self, program):
@@ -55,7 +57,10 @@ class Scripting(object):
         raise NotImplementedError
 
 class CmdExe(Scripting):
-    EXE_REGEX = "cmd(\\.exe)?$"
+    EXE_REGEX = (
+        "([\"]?C:(\\\\)+Windows(\\\\)+System32(\\\\)+)?"
+        "cmd(\\.exe)?[\"]?$"
+    )
 
     program = "cmd"
     ext = "bat"
@@ -65,8 +70,14 @@ class CmdExe(Scripting):
 
         idx, ret = 1, {}
 
+        # Strip off surrounding quotes.
+        if len(cmdline) == 2 and cmdline[1].startswith('"'):
+            cmdline = self.shlex(cmdline[1][1:-1])
+            idx = 0
+
         while idx < len(cmdline):
-            if cmdline[idx] == "/c":
+            if cmdline[idx] == "/c" or cmdline[idx] == "/k":
+                ret["remains"] = cmdline[idx] == "/k"
                 ret["command"] = cmdline[idx+1:]
                 self.parse_command(cmdline[idx+1:])
                 break

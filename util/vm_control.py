@@ -127,8 +127,7 @@ def wait_for_vm_ready(vm_name):
         try:
             ret, out = execute(cmd, shell=True)
         except Exception as e:
-            info_print(e)
-            ret, out = 1, None
+            ret, out = 1, e
         info_print("Waiting for VM. ", ret, out)
 
     print("Wait for vm, finish")

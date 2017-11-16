@@ -618,6 +618,9 @@ def gen_statistics(date):
 
     s = {
         "threat": {
+            "low": 0,
+            "medium": 0,
+            "high": 0
         },
         "type": {
         }

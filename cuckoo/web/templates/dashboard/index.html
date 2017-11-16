@@ -171,8 +171,11 @@
             recent_analysis_summary_chart.setOption(o)
         });
 
-        function to_giga_float(num) {
+        function b_to_gb_float(num) {
             return (num*1.0/1024/1024/1024).toFixed(1)
+        }
+        function kb_to_gb_float(num) {
+            return (num*1.0/1024/1024).toFixed(1)
         }
 
         $.get("/cuckoo/api/status").done(function (response) {
@@ -182,12 +185,10 @@
 
 
             var data = response.data;
-            var disk_avail = to_giga_float(data.diskspace.analyses.free);
-            var disk_used = to_giga_float(data.diskspace.analyses.used);
-            var mem_avail = to_giga_float(data.memavail);
-            var mem_used = to_giga_float(data.memtotal - data.memavail);
-            console.log(mem_avail);
-            console.log(mem_used);
+            var disk_avail = b_to_gb_float(data.diskspace.analyses.free);
+            var disk_used = b_to_gb_float(data.diskspace.analyses.used);
+            var mem_avail = kb_to_gb_float(data.memavail);
+            var mem_used = kb_to_gb_float(data.memtotal - data.memavail);
 
             var cpu_load =  data.cpuload[0] > data.cpucount? data.cpucount: data.cpuload[0];
             var cpu_avail = data.cpucount - cpu_load;

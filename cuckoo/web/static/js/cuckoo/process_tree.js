@@ -525,16 +525,17 @@ var ProcessBehaviorView = function () {
         });
       }
 
-      if (Sticky) {
-
-        if (this._sticky) this._sticky.unstick();
-
-        this._sticky = new Sticky({
-          el: $(table).find('thead'),
-          parent: $(".flex-nav__body"),
-          offset: $('#primary-nav').height() + 20
-        });
-      }
+      // if (Sticky) {
+      //
+      //   if (this._sticky) this._sticky.unstick();
+      //
+      //   this._sticky = new Sticky({
+      //     el: $(table).find('thead'),
+      //     parent: $(".flex-nav__body"),
+      //     // offset: $('#primary-nav').height() + 20
+      //       offset: $('#primary-nav').height()
+      //   });
+      // }
 
       // reference current table to constructor
       this._table = table;

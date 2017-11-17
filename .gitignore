@@ -46,4 +46,5 @@ cuckoo/web/manage.py
 
 cwd/*
 !cwd/conf/
+!cwd/intelligence_analysis/
 cwd_old/

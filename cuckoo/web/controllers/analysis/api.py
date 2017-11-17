@@ -599,8 +599,8 @@ def get_day_statistics(date):
 
 
 def gen_statistics(date):
-    start_time = copy.copy(date)
-    end_time = copy.copy(date)
+    start_time = datetime.datetime(date.year, date.month, date.day, 0, 0, 0)
+    end_time = datetime.datetime(date.year, date.month, date.day, 0, 0, 0)
     end_time += datetime.timedelta(days=1)
 
     cursor = mongo.db.analysis.find(

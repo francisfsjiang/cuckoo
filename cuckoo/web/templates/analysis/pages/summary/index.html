@@ -66,19 +66,9 @@
 
                         {% if report.analysis.info.ia_score %}
                             <h4><span class="glyphicon glyphicon-fire" aria-hidden="true"></span> 智能分析威胁程度</h4>
-                            {% if report.analysis.info.ia_score < 1 %}
+                            {% if report.analysis.info.ia_score < 4 %}
                                 <div class="alert alert-success">
                                     样本无威胁
-                                    <strong>{{ report.analysis.info.ia_score }} / 10.</strong>
-                                </div>
-                            {% elif report.analysis.info.ia_score < 4 %}
-                                <div class="alert alert-info">
-                                    样本威胁等级低
-                                    <strong>{{ report.analysis.info.ia_score }} / 10.</strong>
-                                </div>
-                            {% elif report.analysis.info.ia_score < 7 %}
-                                <div class="alert alert-warning">
-                                    样本威胁等级中
                                     <strong>{{ report.analysis.info.ia_score }} / 10.</strong>
                                 </div>
                             {% else %}
@@ -87,6 +77,27 @@
                                     <strong>{{ report.analysis.info.ia_score }} / 10.</strong>
                                 </div>
                             {% endif %}
+{#                            {% if report.analysis.info.ia_score < 1 %}#}
+{#                                <div class="alert alert-success">#}
+{#                                    样本无威胁#}
+{#                                    <strong>{{ report.analysis.info.ia_score }} / 10.</strong>#}
+{#                                </div>#}
+{#                            {% elif report.analysis.info.ia_score < 4 %}#}
+{#                                <div class="alert alert-info">#}
+{#                                    样本威胁等级低#}
+{#                                    <strong>{{ report.analysis.info.ia_score }} / 10.</strong>#}
+{#                                </div>#}
+{#                            {% elif report.analysis.info.ia_score < 7 %}#}
+{#                                <div class="alert alert-warning">#}
+{#                                    样本威胁等级中#}
+{#                                    <strong>{{ report.analysis.info.ia_score }} / 10.</strong>#}
+{#                                </div>#}
+{#                            {% else %}#}
+{#                                <div class="alert alert-danger">#}
+{#                                    样本威胁等级高#}
+{#                                    <strong>{{ report.analysis.info.ia_score }} / 10.</strong>#}
+{#                                </div>#}
+{#                            {% endif %}#}
                         {% endif %}
 
 

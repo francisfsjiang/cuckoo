@@ -28,29 +28,29 @@
         <section class="flex-nav__body cuckoo-analysis" tabindex="0">
 
             <header class="page-header cuckoo-analysis__header">
-                <h1>Compare</h1>
+                <h1>对比分析</h1>
             </header>
 
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-md-6" style="border-right: 1px dashed #878787;">
-                        <h2 style="text-align: center;">Analysis 1</h2>
+                        <h2 style="text-align: center;">分析1</h2>
                         <hr>
                         <p>&nbsp;</p>
                         {% include "analysis/pages/compare/_info.html" with record=left %}
                     </div>
                     <div class="col-md-6">
-                        <h2 style="text-align: center;">Analysis 2</h2>
+                        <h2 style="text-align: center;">分析2</h2>
                         <hr>
-                        <p>You need to select the second analysis.
-                        {% if records.count > 0 %}
+                        <p>需要选择第二个分析报告进行对比
+                        <!--{% if records.count > 0 %}
                             Following are all the other analyses of the same file or URL:</p>
                             {% include "analysis/pages/compare/_summary_table.html" %}
                         {% else %}
                             <b>There is no other analysis for the same file or URL.</b></p>
-                        {% endif %}
+                            {% endif %}-->
 
-                        <p>If you want to compare to a different analysis, please provide an MD5 hash or a URL:</p>
+                        <p>请输入另一分析报告的ID</p>
                         <form class="form-inline" action="#" id="hash">
                             <input class="form-control" type="text" name="hash" /> <button type="submit" class="btn btn-primary btn-small">Search</button>
                         </form>
@@ -61,7 +61,7 @@
              <!-- footer replacement to avoid double scrollbars -->
             <footer class="flex-grid__footer center-left">
                 <p class="footnote">
-                    &copy;2010-2017 <a href="http://www.bupt.edu.cn" target="_blank">北京邮电大学 网络空间安全学院</a>
+                &copy;中国信息安全评测中心</a>
                 </p>
                 <div class="logo">
                     <img src="{% static "graphic/cuckoo_inverse.png" %}" alt="Cuckoo Malware Analysis Sandbox" />

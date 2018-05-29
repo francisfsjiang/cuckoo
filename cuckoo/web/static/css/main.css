@@ -6643,7 +6643,7 @@ body.night .cuckoo-errors .troubleshoot {
 footer:not(.dashboard-module__footer) {
   background: #292727;
   margin: 0;
-  padding: 20px 0 15px;
+  padding: 5px 0 5px;
   width: 100%;
   color: #ccc;
 }
@@ -6652,6 +6652,7 @@ footer:not(.dashboard-module__footer) a:link,
 footer:not(.dashboard-module__footer) a:visited {
   color: #ccc;
   text-decoration: none;
+  font-size: 10px;
 }
 
 footer:not(.dashboard-module__footer) a:hover {
@@ -6661,7 +6662,7 @@ footer:not(.dashboard-module__footer) a:hover {
 
 #footer-extra {
   background: #1c1c1c;
-  padding: 10px 0;
+  padding: 5px 0;
   font-size: 11px;
   color: #999;
 }

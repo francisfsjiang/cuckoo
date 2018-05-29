@@ -493,7 +493,8 @@ class AnalysisApi(object):
 
     @api_get
     def statistics_month(requests):
-        current_date = datetime.datetime.now()
+        current_date = datetime.datetime(2017,6,29)
+        #current_date = datetime.datetime.now()
 
         statictis_list = []
         k = date_to_label(current_date)

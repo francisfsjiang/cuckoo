@@ -254,7 +254,7 @@ class AnalysisRoutes:
                 a.level = "high"
             analysis_list[a.id] = a
         analysis_list = analysis_list.values()
-        analysis_list.sort(lambda a, b : a.id < b.id)
+        analysis_list.sort(lambda a, b : a.id > b.id)
 
         return render(request, "analysis/index_page.html", context={"analysis_list": analysis_list, "filter_options": filter_options})
         # return render_template(request, "analysis/index_page.html", context={"analysis_list": analysis_list})

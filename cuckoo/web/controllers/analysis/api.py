@@ -342,7 +342,7 @@ class AnalysisApi(object):
                     "target": {"$last": "$target"}
                 }
             },
-            # {"$sort": {"_id.id": 1}},
+            {"$sort": {"info.id": -1}},
             {"$limit": limit},
 
 

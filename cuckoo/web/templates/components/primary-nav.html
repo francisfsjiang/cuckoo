@@ -10,7 +10,7 @@
 		<li {% if "/dashboard/" in request.path or request.path == "/" %}class="active"{% endif %}><a href="{% url "dashboard.views.index" %}"><i class="fa fa-tachometer"></i> 概览</a></li>
 		<li {% if request.path == "/analysis/" %}class="active"{% endif %}><a href="{% url "analysis/recent" %}"><i class="fa fa-th-list"></i> 近期任务</a></li>
 		<li {% if request.path == "/analysis/pending/" %}class="active"{% endif %}><a href="{% url "analysis.views.pending" %}"><i class="fa fa-cogs"></i> 任务队列</a></li>
-		<li {% if request.path == "/analysis/search/" %}class="active"{% endif %}><a href="{% url "analysis.views.search" %}"><i class="fa fa-search"></i> 搜索</a></li>
+{#		<li {% if request.path == "/analysis/search/" %}class="active"{% endif %}><a href="{% url "analysis.views.search" %}"><i class="fa fa-search"></i> 搜索</a></li>#}
 	</ul>
 
 	<ul class="app-nav__nav--right">

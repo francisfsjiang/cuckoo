@@ -117,6 +117,13 @@
                         data: data.high
                     },
                     {
+                        name:'中危',
+                        type:'line',
+                        stack: '总量',
+                        areaStyle: {normal: {}},
+                        data: data.medium
+                    },
+                    {
                         name:'低危',
                         type:'line',
                         stack: '总量',
@@ -139,6 +146,7 @@
 {#                        lableLine: { normal: { show: false }, emphasis: { show: true }},#}
                         data: [
                             {value: response.today_num.high, name: "高危"},
+                            {value: response.today_num.medium, name: "中危"},
                             {value: response.today_num.low, name: "低危"}
                         ]
                     },
@@ -146,6 +154,7 @@
                         name:'本周',
                         data: [
                             {value: response.this_week_num.high, name: "高危"},
+                            {value: response.this_week_num.medium, name: "中危"},
                             {value: response.this_week_num.low, name: "低危"}
                         ]
                     },
@@ -153,6 +162,7 @@
                         name:'本月',
                         data: [
                             {value: response.this_month_num.high, name: "高危"},
+                            {value: response.this_month_num.medium, name: "中危"},
                             {value: response.this_month_num.low, name: "低危"}
                         ]
                     }

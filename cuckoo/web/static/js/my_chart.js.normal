@@ -12,7 +12,7 @@ var recent_analysis_chart_option = {
         }
     },
     legend: {
-        data:['高危','低危']
+        data:['高危','中危','低危']
     },
     grid: {
         left: '3%',
@@ -43,18 +43,22 @@ var recent_analysis_chart_option = {
             end: 100
         }
     ],
-    color: [
-        '#c22d00',
-        '#578ded',
-        '#b0c4c8',
-        '#d48265',
-        '#91c7ae',
-        '#749f83',
-        '#ca8622'
-    ],
+    // color: [
+    //     '#c22d00',
+    //     '#edde4c',
+    //     '#b0c4c8',
+    //     '#d48265',
+    //     '#91c7ae',
+    //     '#749f83',
+    //     '#ca8622'
+    // ],
     series : [
         {
             name: "高危",
+            type:'line'
+        },
+        {
+            name: "中危",
             type:'line'
         },
         {
@@ -100,7 +104,7 @@ var recent_analysis_summary_chart_option = {
     legend: {
         orient: 'vertical',
         left: 'left',
-        data: ["高危", "低危"]
+        data: ["高危", "中危", "低危"]
     },
     itemStyle: {
         normal: {
@@ -114,15 +118,15 @@ var recent_analysis_summary_chart_option = {
             shadowColor: 'rgba(0, 0, 0, 0.3)'
         }
     },
-    color: [
-        '#c22d00',
-        '#578ded',
-        '#c7cbca',
-        '#d48265',
-        '#91c7ae',
-        '#749f83',
-        '#ca8622'
-    ],
+    // color: [
+    //     '#c22d00',
+    //     '#caa74b',
+    //     '#c7cbca',
+    //     '#d48265',
+    //     '#91c7ae',
+    //     '#749f83',
+    //     '#ca8622'
+    // ],
     series : [
         {
             name:'今日',
@@ -134,6 +138,7 @@ var recent_analysis_summary_chart_option = {
             lableLine: { normal: { show: false }, emphasis: { show: true }},
             data: [
                 {value: 1, name: "高危"},
+                {value: 1, name: "中危"},
                 {value: 1, name: "低危"}
             ]
         },
@@ -147,6 +152,7 @@ var recent_analysis_summary_chart_option = {
             lableLine: { normal: { show: false }, emphasis: { show: true }},
             data: [
                 {value: 1, name: "高危"},
+                {value: 1, name: "中危"},
                 {value: 1, name: "低危"}
             ]
         },
@@ -160,6 +166,7 @@ var recent_analysis_summary_chart_option = {
             lableLine: { normal: { show: false }, emphasis: { show: true }},
             data: [
                 {value: 1, name: "高危"},
+                {value: 1, name: "中危"},
                 {value: 1, name: "低危"}
             ]
         }

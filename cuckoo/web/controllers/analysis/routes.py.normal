@@ -6,7 +6,6 @@
 import re
 import datetime
 import os
-import json
 
 from django.http import HttpResponse, Http404
 from django.shortcuts import redirect, render
@@ -116,10 +115,11 @@ class AnalysisRoutes:
                 self.file = True
                 self.url = True
                 self.low = True
+                self.medium = True
                 self.high = True
 
             def select_all(self):
-                self.file = self.url = self.low = self.high = True
+                self.file = self.url = self.low = self.medium = self.high = True
 
         filter_options = Options()
         try:
@@ -147,11 +147,15 @@ class AnalysisRoutes:
 
         filter_score = []
         if request.GET.get("filter-low", "off") == "on":
-            filter_score.append({"info.ia_score": {"$gte": 0, "$lt": 4}})
+            filter_score.append({"info.score": {"$gte": 0, "$lt": 4}})
         else:
             filter_options.low = False
+        if request.GET.get("filter-medium", "off") == "on":
+            filter_score.append({"info.score": {"$gte": 4, "$lt": 7}})
+        else:
+            filter_options.medium = False
         if request.GET.get("filter-high", "off") == "on":
-            filter_score.append({"info.ia_score": {"$gte": 4, "$lte": 10}})
+            filter_score.append({"info.score": {"$gte": 7, "$lte": 10}})
         else:
             filter_options.high = False
         if len(filter_score) >= 2:
@@ -242,29 +246,12 @@ class AnalysisRoutes:
             a.file_name = target_name
             a.type = target_type
             a.score = info.get("score", 0.0)
-            a.ia_score = info.get("ia_score", 0.0)
-            if a.ia_score < 4:
-                a.ia_score_name = "低危"
-            else:
-                a.ia_score_name = "高危"
-            if a.ia_score < 4:
+            if a.score < 4:
                 a.level = "low"
+            elif a.score < 7:
+                a.level = "medium"
             else:
                 a.level = "high"
-
-            source = info.get("custom")
-            if not source:
-                source = {
-                    "src_ip": "127.0.0.1",
-                    "src_port": 80,
-                    "dst_ip": "127.0.0.1",
-                    "dst_port": 80
-                }
-            else:
-                source = json.loads(source)
-                source = source["source"]
-            a.source_from = "From: {src_ip}:{src_port}".format(**source)
-            a.source_to = "To: {dst_ip}:{dst_port}".format(**source)
             analysis_list[a.id] = a
         analysis_list = analysis_list.values()
         analysis_list.sort(key=lambda a : a.id, reverse=True)

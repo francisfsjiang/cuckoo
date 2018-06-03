@@ -1,4 +1,3 @@
-# coding=utf-8
 # Copyright (C) 2016-2017 Cuckoo Foundation.
 # This file is part of Cuckoo Sandbox - http://www.cuckoosandbox.org
 # See the file 'docs/LICENSE' for copying permission.
@@ -14,7 +13,6 @@ import tarfile
 import zipfile
 import copy
 import re
-import json
 
 from django.http import JsonResponse, HttpResponse
 from django.core.cache import caches
@@ -379,25 +377,13 @@ class AnalysisApi(object):
                 target_type = "Not Detected"
                 md5 = "-"
 
-            ia_score = info.get("ia_score")
-            if ia_score < 4:
+            score = info.get("score")
+            if score < 4:
                 badge_type = "badge-default"
-                ia_score_name = "低危"
+            elif score < 7:
+                badge_type = "badge-warning"
             else:
                 badge_type = "badge-danger"
-                ia_score_name = "高危"
-
-            source = info.get("custom")
-            if not source:
-                source = {
-                    "src_ip": "127.0.0.1",
-                    "src_port": 80,
-                    "dst_ip": "127.0.0.1",
-                    "dst_port": 80
-                }
-            else:
-                source = json.loads(source)
-                source = source["source"]
 
             tasks[len(tasks)] = {
                 "id": info["id"],
@@ -407,13 +393,9 @@ class AnalysisApi(object):
                 "added_on": info.get("added"),
                 "completed_on": info.get("ended"),
                 "status": "reported",
-                "normal_score": info.get("score"),
-                "ia_score": ia_score,
-                "ia_score_name": ia_score_name,
+                "score": info.get("score"),
                 "badge_type": badge_type,
-                "target_type": target_type,
-                "source_from": "From: {src_ip}:{src_port}".format(**source),
-                "source_to":   "To: {dst_ip}:{dst_port}".format(**source)
+                "target_type": target_type
             }
         return JsonResponse({
             "tasks": sorted(
@@ -518,7 +500,7 @@ class AnalysisApi(object):
         k = date_to_label(current_date)
         v = get_day_statistics(current_date)
         statictis_list.append((k, v))
-        for i in range(31):
+        for i in range(30):
             current_date -= datetime.timedelta(days=1)
             k = date_to_label(current_date)
             v = get_day_statistics(current_date)
@@ -529,19 +511,23 @@ class AnalysisApi(object):
         json = dict()
         json["x"] = []
         json["low"] = []
+        json["medium"] = []
         json["high"] = []
         for k, v in statictis_list:
             json["x"].append(k)
             json["low"].append(v["threat"]["low"])
+            json["medium"].append(v["threat"]["medium"])
             json["high"].append(v["threat"]["high"])
         result["analysis_num"] = json
 
         def get_period_sum(period):
             json = dict()
             json["low"] = 0
+            json["medium"] = 0
             json["high"] = 0
             for k, v in period:
                 json["low"] += v["threat"]["low"]
+                json["medium"] += v["threat"]["medium"]
                 json["high"] += v["threat"]["high"]
             return json
 
@@ -633,6 +619,7 @@ def gen_statistics(date):
     s = {
         "threat": {
             "low": 0,
+            "medium": 0,
             "high": 0
         },
         "type": {
@@ -640,10 +627,12 @@ def gen_statistics(date):
     }
 
     for doc in cursor:
-        score = doc.get("info", {}).get("ia_score", 0)
+        score = doc.get("info", {}).get("score", 0)
         score = float(score)
         if score < 4:
             add_one(s["threat"], "low")
+        elif score < 7:
+            add_one(s["threat"], "medium")
         else:
             add_one(s["threat"], "high")
 

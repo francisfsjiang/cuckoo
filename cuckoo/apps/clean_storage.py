@@ -16,6 +16,8 @@ from cuckoo.core.database import Database
 
 
 def cuckoo_clean_storage(days_before):
+    if not days_before:
+        return
     print("正在清理 %d 日前数据" % days_before)
     analysis_path = os.path.join(cwd(root=True), "storage", "analyses")
 

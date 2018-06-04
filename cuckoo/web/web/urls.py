@@ -15,6 +15,7 @@ urlpatterns = [
     url(r"^$", dashboard.views.index),
     url(r"^analysis/", include("analysis.urls")),
     url(r"^submit/", include("submission.urls")),
+    url(r"^control_board/", include("control_board.urls")),
     url(r"^file/(?P<category>\w+)/(?P<object_id>\w*)/$", analysis.views.file),
     url(r"^file/(?P<category>\w+)/(?P<object_id>\w*)/(?P<fetch>\w+)/$", analysis.views.file),
     url(r"^full_memory/(?P<analysis_number>\w+)/$", analysis.views.full_memory_dump_file),

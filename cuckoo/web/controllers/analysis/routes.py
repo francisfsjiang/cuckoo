@@ -204,7 +204,9 @@ class AnalysisRoutes:
         cursor = mongo.db.analysis.find(
             doc_filter,
             ["info", "target"]
-        ).sort("info.id", pymongo.DESCENDING).limit(100).skip((page_num - 1) * 100)
+        ).sort("info.id", pymongo.DESCENDING).\
+            limit(100).\
+            skip((page_num - 1) * 100)
 
         analysis_list = {}
         for analysis in cursor:

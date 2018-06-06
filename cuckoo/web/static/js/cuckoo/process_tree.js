@@ -491,7 +491,7 @@ var ProcessBehaviorView = function () {
 
       // handle empty result sets
       if (tableChildren.length == 0) {
-        noResultCell = $('<tr>\n                        <td colspan="' + tableColumns + '" class="no-result">\n                          <p>No results</p>\n                          <button class="button">Reset filter</button>\n                        </td>\n                      </tr>');
+        noResultCell = $('<tr>\n                        <td colspan="' + tableColumns + '" class="no-result">\n                          <p>无结果</p>\n                          <button class="button">重置过滤器</button>\n                        </td>\n                      </tr>');
 
         $(table).append(noResultCell);
 

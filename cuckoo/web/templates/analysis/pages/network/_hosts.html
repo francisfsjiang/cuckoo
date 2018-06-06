@@ -3,9 +3,9 @@
     <table>
         <thead>
             <tr>
-                <th>IP Address</th>
-                <th>Status</th>
-                <th>Action</th>
+                <th>IP地址</th>
+                <th>状态</th>
+{#                <th></th>#}
             </tr>
         </thead>
         <tbody>
@@ -24,9 +24,9 @@
                                     Active
                                 {% endif %}
                             </td>
-                            <td class="cell-sm">
-                                <a href="{% url "analysis.views.moloch" ip=host %}">Moloch</a>
-                            </td>
+{#                            <td class="cell-sm">#}
+{#                                <a href="{% url "analysis.views.moloch" ip=host %}">Moloch</a>#}
+{#                            </td>#}
                         </tr>
                     {% endif %}
                 {% endfor %}
@@ -34,7 +34,7 @@
             {% else %}
 
                 <tr>
-                    <td class="cell-fill text-center" colspan="3">No hosts contacted.</td>
+                    <td class="cell-fill text-center" colspan="3">未检测到</td>
                 </tr>
 
             {% endif %}

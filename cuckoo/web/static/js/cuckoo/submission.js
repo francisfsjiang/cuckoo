@@ -2621,7 +2621,7 @@ $(function () {
 
 										var network = new this.TopSelect({
 											name: 'network-routing-' + item.filetree.index,
-											title: 'Network Routing',
+											title: '网络',
 											doc_link: 'https://cuckoo.sh/docs/installation/host/routing.html',
 											default: item.per_file_options['network-routing'],
 											options: [{ name: 'none', value: 'none', disabled: routing_prefs['none'] === false }, { name: 'drop', value: 'drop', disabled: routing_prefs['drop'] === false }, { name: 'internet', value: 'internet', disabled: routing_prefs['internet'] === false }, { name: 'inetsim', value: 'inetsim', disabled: routing_prefs['inetsim'] === false }, { name: 'tor', value: 'tor', disabled: routing_prefs['tor'] === false }],
@@ -2639,7 +2639,7 @@ $(function () {
 
 										var pkg = new this.SimpleSelect({
 											name: 'package-' + item.filetree.index,
-											title: 'Package',
+											title: '样本文件类型',
 											doc_link: 'https://cuckoo.sh/docs/usage/packages.html',
 											default: item.per_file_options['package'],
 											options: default_package_selection_options
@@ -2652,7 +2652,7 @@ $(function () {
 
 										var priority = new this.TopSelect({
 											name: 'piority-' + item.filetree.index,
-											title: 'Priority',
+											title: '优先级',
 											default: parseInt(item.per_file_options['priority']),
 											options: [{ name: 'low', value: 1, className: 'priority-s' }, { name: 'medium', value: 2, className: 'priority-m' }, { name: 'high', value: 3, className: 'priority-l' }]
 										}).on('change', function (value) {
@@ -2662,10 +2662,10 @@ $(function () {
 
 										var timeout = new this.TopSelect({
 											name: 'timeout-' + item.filetree.index,
-											title: 'Timeout',
+											title: '超时/秒',
 											default: item.per_file_options['timeout'],
 											units: 'seconds',
-											options: [{ name: 'short', value: 60, description: '60' }, { name: 'medium', value: 120, description: '120' }, { name: 'long', value: 300, description: '300' }, { name: 'custom', manual: true }]
+											options: [{ name: '短', value: 60, description: '60' }, { name: '中', value: 120, description: '120' }, { name: '长', value: 300, description: '300' }, { name: 'custom', manual: true }]
 										}).on('change', function (value) {
 											item.per_file_options['timeout'] = value;
 											setFieldValue.call(this, value);
@@ -2673,7 +2673,7 @@ $(function () {
 
 										var config = new this.ToggleList({
 											name: 'options-' + item.filetree.index,
-											title: 'Options',
+											title: '选项',
 											extraOptions: true,
 											default: item.per_file_options['options'],
 											options: submission_options,
@@ -2710,7 +2710,7 @@ $(function () {
 
 										var machine = new this.SimpleSelect({
 											name: 'machine-' + item.filetree.index,
-											title: 'Machine',
+											title: '虚拟机',
 											default: item.per_file_options['machine'],
 											options: default_analysis_options.available_machines
 										}).on('change', function (value) {
@@ -2890,7 +2890,8 @@ $(function () {
 			}
 
 			// $(".page-freeze").addClass('in');
-			CuckooWeb.toggle_page_freeze(true, "We're processing your submission... This could take a few seconds.");
+			// CuckooWeb.toggle_page_freeze(true, "We're processing your submission... This could take a few seconds.");
+            CuckooWeb.toggle_page_freeze(true, "我们正在处理您的提交，请等待。");
 
 			if (debugging) {
 				console.log(JSON.parse(json));

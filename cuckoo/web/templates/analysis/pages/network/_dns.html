@@ -5,9 +5,9 @@
     <table>
         <thead>
             <tr>
-                <th>Name</th>
-                <th>Response</th>
-                <th>Post-Analysis Lookup</th>
+                <th>域名</th>
+                <th>响应</th>
+                <th>地址</th>
             </tr>
         </thead>
         <tbody>
@@ -16,7 +16,8 @@
                 {% for p in report.analysis.network.dns %}
                     <tr>
                         <td>
-                            <a target="_blank" href="{% url "analysis.views.moloch" host=p.request %}">{{p.request}}</a>
+{#                            <a target="_blank" href="{% url "analysis.views.moloch" host=p.request %}">{{p.request}}</a>#}
+                            <a target="_blank">{{p.request}}</a>
                         </td>
                         <td class="dns-badges">
                             {% for a in p.answers %}
@@ -25,7 +26,8 @@
                         </td>
                         <td>
                             {% if ":" not in report.domainlookups|get_item:p.request %}
-                                <a target="_blank" href="{% url "analysis.views.moloch" ip=report.domainlookups|get_item:p.request %}">
+{#                                <a target="_blank" href="{% url "analysis.views.moloch" ip=report.domainlookups|get_item:p.request %}">#}
+                                <a target="_blank">
                                     {{ report.domainlookups|get_item:p.request }}
                                 </a>
                             {% else %}

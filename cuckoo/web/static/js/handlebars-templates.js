@@ -261,8 +261,8 @@ this["HANDLEBARS_TEMPLATES"]["dashboard-table"] = Handlebars.template({"1":funct
 
 
 
-    + alias3(((helper = (helper = helpers.ia_score_name || (depth0 != null ? depth0.ia_score_name : depth0)) != null ? helper : alias1),(typeof helper === alias2 ? helper.call(depth0,{"name":"ia_score_name","hash":{},"data":data}) : helper)))
-    + "</span></td>\n            </tr>\n\n";
+    + alias3(((helper = (helper = helpers.ia_score || (depth0 != null ? depth0.ia_score : depth0)) != null ? helper : alias1),(typeof helper === alias2 ? helper.call(depth0,{"name":"ia_score","hash":{},"data":data}) : helper)))
+    + "/10</span></td>\n            </tr>\n\n";
 },"3":function(depth0,helpers,partials,data) {
     return "            <tr class=\"less-entries\">\n                <td colspan=\"5\"><span class=\"badge\">暂无数据</span></td>\n            </tr>\n";
 },"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
@@ -379,17 +379,17 @@ this["HANDLEBARS_TEMPLATES"]["submission-file-detail"] = Handlebars.template({"1
     + ((stack1 = helpers['if'].call(depth0,((stack1 = ((stack1 = (depth0 != null ? depth0.item : depth0)) != null ? stack1.filetree : stack1)) != null ? stack1.is_package : stack1),{"name":"if","hash":{},"fn":this.program(3, data, 0),"inverse":this.program(5, data, 0),"data":data})) != null ? stack1 : "")
     + "\n"
     + ((stack1 = helpers['if'].call(depth0,((stack1 = (depth0 != null ? depth0.item : depth0)) != null ? stack1.fname_short : stack1),{"name":"if","hash":{},"fn":this.program(7, data, 0),"inverse":this.program(9, data, 0),"data":data})) != null ? stack1 : "")
-    + "	</h4>\n</header>\n\n<ul class=\"flex-static__summary\">\n	<li>\n		<strong>path</strong>\n"
+    + "	</h4>\n</header>\n\n<ul class=\"flex-static__summary\">\n	<li>\n		<strong>路径</strong>\n"
     + ((stack1 = helpers['if'].call(depth0,((stack1 = (depth0 != null ? depth0.item : depth0)) != null ? stack1.rpath_short : stack1),{"name":"if","hash":{},"fn":this.program(11, data, 0),"inverse":this.program(13, data, 0),"data":data})) != null ? stack1 : "")
-    + "	</li>\n	<li>\n		<strong>type</strong>\n		"
+    + "	</li>\n	<li>\n		<strong>类型</strong>\n		"
     + alias2(alias1(((stack1 = ((stack1 = (depth0 != null ? depth0.item : depth0)) != null ? stack1.finger : stack1)) != null ? stack1.magic_human : stack1), depth0))
     + "\n	</li>\n	<li>\n		<strong>mime</strong>\n		"
     + alias2(alias1(((stack1 = ((stack1 = (depth0 != null ? depth0.item : depth0)) != null ? stack1.finger : stack1)) != null ? stack1.mime_human : stack1), depth0))
-    + "\n	</li>\n	<li>\n		<strong>size</strong>\n		"
+    + "\n	</li>\n	<li>\n		<strong>文件大小</strong>\n		"
     + ((stack1 = (helpers.file_size || (depth0 && depth0.file_size) || helpers.helperMissing).call(depth0,((stack1 = (depth0 != null ? depth0.item : depth0)) != null ? stack1.size : stack1),{"name":"file_size","hash":{},"data":data})) != null ? stack1 : "")
     + "\n	</li>\n"
     + ((stack1 = helpers['if'].call(depth0,((stack1 = (depth0 != null ? depth0.item : depth0)) != null ? stack1.duplicate : stack1),{"name":"if","hash":{},"fn":this.program(15, data, 0),"inverse":this.noop,"data":data})) != null ? stack1 : "")
-    + "</ul>\n\n<header class=\"flex-form__header\">\n	<h4><i class=\"fa fa-tasks\"></i> Analysis Specific options</h4>\n	<small>Options you change here are persisted to this file only.</small>\n</header>\n\n<div class=\"per-file-options flex-form\"></div>\n";
+    + "</ul>\n\n<header class=\"flex-form__header\">\n	<h4><i class=\"fa fa-tasks\"></i> 分析选项</h4>\n	<small>选项仅应用于该文件</small>\n</header>\n\n<div class=\"per-file-options flex-form\"></div>\n";
 },"useData":true});
 this["HANDLEBARS_TEMPLATES"]["submission-selection-list"] = Handlebars.template({"1":function(depth0,helpers,partials,data) {
     var stack1;

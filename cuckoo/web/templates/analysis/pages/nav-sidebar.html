@@ -102,34 +102,34 @@
 		</li>
         {% endif %}
 
-		<li>
-			<a href="{% url "analysis/compare/left" report.analysis.info.id %}"
-			{% if env.view_kwargs.page == 'compare' %} class="active" {% endif %}>
-				<i class="fa fa-random"></i>
-				<span>对比分析</span>
-			</a>
-		</li>
-		<li>
-			<a href="{% url "analysis" report.analysis.info.id "export" %}"
-			{% if env.view_kwargs.page == 'export' %} class="active" {% endif %}>
-				<i class="fa fa-download"></i>
-				<span>分析导出</span>
-			</a>
-		</li>
-		<li>
-		<a href="{% url "analysis/reboot" report.analysis.info.id %}"
-		{% if env.view_kwargs.page == 'behavioral' %} class="active" {% endif %}>
-			<i class="fa fa-power-off"></i>
-			<span>重新分析</span>
-		</a>
-		</li>
-		<li>
-			<a href="{% url "analysis" report.analysis.info.id "options" %}"
-			{% if env.view_kwargs.page == 'options' %} class="active" {% endif %}>
-				<i class="fa fa-cogs"></i>
-				<span>选项</span>
-			</a>
-		</li>
+{#		<li>#}
+{#			<a href="{% url "analysis/compare/left" report.analysis.info.id %}"#}
+{#			{% if env.view_kwargs.page == 'compare' %} class="active" {% endif %}>#}
+{#				<i class="fa fa-random"></i>#}
+{#				<span>对比分析</span>#}
+{#			</a>#}
+{#		</li>#}
+{#		<li>#}
+{#			<a href="{% url "analysis" report.analysis.info.id "export" %}"#}
+{#			{% if env.view_kwargs.page == 'export' %} class="active" {% endif %}>#}
+{#				<i class="fa fa-download"></i>#}
+{#				<span>分析导出</span>#}
+{#			</a>#}
+{#		</li>#}
+{#		<li>#}
+{#		<a href="{% url "analysis/reboot" report.analysis.info.id %}"#}
+{#		{% if env.view_kwargs.page == 'behavioral' %} class="active" {% endif %}>#}
+{#			<i class="fa fa-power-off"></i>#}
+{#			<span>重新分析</span>#}
+{#		</a>#}
+{#		</li>#}
+{#		<li>#}
+{#			<a href="{% url "analysis" report.analysis.info.id "options" %}"#}
+{#			{% if env.view_kwargs.page == 'options' %} class="active" {% endif %}>#}
+{#				<i class="fa fa-cogs"></i>#}
+{#				<span>选项</span>#}
+{#			</a>#}
+{#		</li>#}
 {#		<li>#}
 {#			<a href="#" data-toggle="modal" data-target="#modal_feedback">#}
 {#				<i class="fa fa-bug"></i>#}

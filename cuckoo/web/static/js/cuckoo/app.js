@@ -613,6 +613,8 @@ var DashboardTable = function () {
                 $recent: this.el.find("[data-populate='dashboard-table-recent']"),
                 $pending: this.el.find("[data-populate='dashboard-table-pending']")
             });
+
+            $(".cuckoo-table > thead > tr").off("click");
         }
     }, {
         key: 'generateTable',

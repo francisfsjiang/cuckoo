@@ -1203,6 +1203,7 @@ class Database(object):
             priority = 1
 
         task = self.view_task(task_id)
+        print(task.target)
         if not task or not os.path.exists(task.target):
             log.error(
                 "Unable to add reboot analysis as the original task or its "

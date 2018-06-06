@@ -254,17 +254,18 @@ class AnalysisRoutes:
             else:
                 a.level = "high"
 
-            source = info.get("custom")
-            if not source:
+            try:
+                source = info.get("custom")
+                source = json.loads(source)
+                source = source["source"]
+            except:
                 source = {
                     "src_ip": "127.0.0.1",
                     "src_port": 80,
                     "dst_ip": "127.0.0.1",
                     "dst_port": 80
                 }
-            else:
-                source = json.loads(source)
-                source = source["source"]
+
             a.source_from = "From: {src_ip}:{src_port}".format(**source)
             a.source_to = "To: {dst_ip}:{dst_port}".format(**source)
             analysis_list[a.id] = a

@@ -268,7 +268,7 @@ this["HANDLEBARS_TEMPLATES"]["dashboard-table"] = Handlebars.template({"1":funct
 },"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
     var stack1;
 
-  return "<table class=\"cuckoo-table\">\n\n    <thead>\n        <tr>\n            <th width='4%'>ID</th>\n            <th width='10%'>日期</th>\n            <th width='25%'>来源</th>\n            <th>文件/URL</th>\n            <th>类型</th>\n            <th>威胁程度</th>\n        </tr>\n    </thead>\n\n    <tbody>\n\n"
+  return "<table class=\"cuckoo-table\">\n\n    <thead>\n        <tr onclick='#' style=''>\n            <th width='4%'>ID</th>\n            <th width='10%'>日期</th>\n            <th width='25%'>来源</th>\n            <th>文件/URL</th>\n            <th>类型</th>\n            <th>恶意程度评分</th>\n        </tr>\n    </thead>\n\n    <tbody>\n\n"
     + ((stack1 = helpers.each.call(depth0,(depth0 != null ? depth0.entries : depth0),{"name":"each","hash":{},"fn":this.program(1, data, 0),"inverse":this.noop,"data":data})) != null ? stack1 : "")
     + "\n"
     + ((stack1 = helpers['if'].call(depth0,(depth0 != null ? depth0.lessEntries : depth0),{"name":"if","hash":{},"fn":this.program(3, data, 0),"inverse":this.noop,"data":data})) != null ? stack1 : "")

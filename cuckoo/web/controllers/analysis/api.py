@@ -387,17 +387,17 @@ class AnalysisApi(object):
                 badge_type = "badge-danger"
                 ia_score_name = "高危"
 
-            source = info.get("custom")
-            if not source:
+            try:
+                source = info.get("custom")
+                source = json.loads(source)
+                source = source["source"]
+            except:
                 source = {
                     "src_ip": "127.0.0.1",
                     "src_port": 80,
                     "dst_ip": "127.0.0.1",
                     "dst_port": 80
                 }
-            else:
-                source = json.loads(source)
-                source = source["source"]
 
             tasks[len(tasks)] = {
                 "id": info["id"],

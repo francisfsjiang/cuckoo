@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Copyright (C) 2016-2017 Cuckoo Foundation.
 # This file is part of Cuckoo Sandbox - http://www.cuckoosandbox.org
 # See the file 'docs/LICENSE' for copying permission.
@@ -16,7 +17,7 @@ def handler404(request):
     response = render_to_response(
         "errors/error.html", {
             "code": 404,
-            "error": "Sorry, but the page you are looking for was not found."
+            "error": "对不起，访问的网页未找到."
         }, context_instance=RequestContext(request)
     )
     response.status_code = 404
@@ -26,7 +27,7 @@ def handler500(request):
     response = render_to_response(
         "errors/error.html", {
             "code": 500,
-            "error": "A server error occurred."
+            "error": "服务器错误."
         }, context_instance=RequestContext(request)
     )
     response.status_code = 500

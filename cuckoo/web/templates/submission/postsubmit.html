@@ -6,17 +6,17 @@
 
     <header class="flex-grid__header">
         <ul class="breadcrumbs">
-            <li class="done"><a href="#">submit file</a></li>
-            <li class="done"><a href="#">configure</a></li>
-            <li class="done"><a href="#">analyze</a></li>
-            <li class="active"><a href="#">Summary</a></li>
+            <li class="done"><a href="#">提交文件</a></li>
+            <li class="done"><a href="#">配置</a></li>
+            <li class="done"><a href="#">分析</a></li>
+            <li class="active"><a href="#">概要</a></li>
         </ul>
         <h3>
-            <i class="fa fa-check"></i> Your submission has been received and the tasks are being processed!
+            <i class="fa fa-check"></i> 您的提交已被接收，正在处理中
             <div class="pull-right">
-                <a class="flex-grid__button--description">Next: </a>
-                <a class="flex-grid__button transparent" href="/analysis/pending">View pending tasks</a>
-                <a class="flex-grid__button transparent" href="/submit">Submit again</a>
+                <a class="flex-grid__button--description">下一操作: </a>
+                <a class="flex-grid__button transparent" href="/analysis/pending">查看等待中任务</a>
+                <a class="flex-grid__button transparent" href="/submit">再次提交</a>
             </div>
         </h3>
     </header>
@@ -25,15 +25,15 @@
         <div class="flex-grid__container">
             <div class="flex-grid__column scrollable">
 
-                <h3 class="clearfix">Tasks: <small>Refreshes every 2.5 seconds</small></h3>
+                <h3 class="clearfix">任务: <small>每2.5秒自动刷新</small></h3>
                 <table class="cuckoo-table" id="submission-task-table">
                     <thead>
                         <tr>
-                            <th>Task ID</th>
+                            <th>任务ID</th>
                             <th>Date</th>
-                            <th>Filename / URL</th>
-                            <th>Package</th>
-                            <th>Status</th>
+                            <th>文件名 / URL</th>
+                            <th>分析类型</th>
+                            <th>状态</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -56,7 +56,7 @@
 
     <footer class="flex-grid__footer">
         <p class="footnote">
-            &copy;2010-2017 <a href="http://www.bupt.edu.cn" target="_blank">北京邮电大学 网络空间安全学院</a>
+            &copy;中国信息安全评测中心</a>
         </p>
         <div class="logo">
             <img src="{% static "graphic/cuckoo_inverse.png" %}" alt="Cuckoo Malware Analysis Sandbox" />

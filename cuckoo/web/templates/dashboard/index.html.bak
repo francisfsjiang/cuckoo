@@ -1,0 +1,235 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block content %}
+
+<div id="cuckoo-dashboard" class="hidden"></div>
+
+<div class="flex-grid__horizontal--grow dashboard">
+
+    <div class="flex-grid__column dashboard__left" id="dashboard-tables">
+
+        <h2 class="dashboard__col-title">近期分析</h2>
+        <div class="dashboard-module__lg" id="recent_analysis_chart_div" style="background-color: white; height: 400px">
+            <!-- 为 ECharts 准备一个具备大小（宽高）的 DOM -->
+            <div id="recent_analysis_chart" style="width: 95%;height:95%;margin: 10px;"></div>
+        </div>
+
+        <!-- recent analyses -->
+        <div class="dashboard-module__lg" data-dashboard-module="processes">
+            <header class="dashboard-module__header">
+
+                <div class="flex-tabs__tabs dashboard-module__tabs">
+
+                    <!-- <a href="#" class="flex-tabs__tab active">Analyses</a>
+                    <a href="#" class="flex-tabs__tab">Tasks</a>
+                    <a href="#" class="flex-tabs__tab">Failed</a> -->
+
+                    <div class="flex-tabs__tab--right">
+                        <div class="custom-select" data-custom="select">
+                            <span>展示任务数量: </span>
+                            <select data-select="limit">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3" selected="selected">3</option>
+                                <option value="5">5</option>
+                                <option value="10">10</option>
+                                <option value="20">20</option>
+                                <option value="50">50</option>
+                            </select>
+                        </div>
+                    </div>
+
+                </div>
+
+            </header>
+            <section class="dashboard-module__body" data-populate="dashboard-table-recent">
+{#                <div class="dashboard-module__body--left" data-populate="dashboard-table-recent">#}
+{#                </div>#}
+{#                <div class="dashboard-module__body--left" data-populate="dashboard-table-recent">#}
+{#                </div>#}
+
+                <!--
+                <div class="dashboard-module__body--right" data-populate="dashboard-table-pending">
+                </div>
+                -->
+            </section>
+
+            <footer class="dashboard-module__footer">
+                <p><a href="/analysis">显示所有最近分析</a></p>
+            </footer>
+
+        </div>
+
+    </div>
+
+    <div class="flex-grid__column dashboard__right">
+
+
+        <h2 class="dashboard__col-title">恶意程度分布</h2>
+
+
+        <div class="dashboard-module" style="background-color: white; height: 350px" align="center">
+            <div id="recent_analysis_summary_chart" style="width: 475px;height:95%;margin: 10px;"></div>
+        </div>
+
+        <div class="dashboard-module" style="background-color: white; height: 300px" align="center">
+            <div id="system_status_chart" style="width: 475px;height:95%;margin: 10px;"></div>
+        </div>
+
+    </div>
+
+</div>
+
+<div class="flex-grid__horizontal--grow dashboard bottom">
+
+
+</div>
+
+    <script src="{% static "js/my_chart.js" %}"></script>
+    <script type="text/javascript">
+        // 基于准备好的dom，初始化echarts实例
+        var recent_analysis_chart = echarts.init(document.getElementById('recent_analysis_chart'), "shine");
+        recent_analysis_chart.setOption(recent_analysis_chart_option);
+
+        var recent_analysis_summary_chart = echarts.init(document.getElementById("recent_analysis_summary_chart"), "shine");
+        recent_analysis_summary_chart.setOption(recent_analysis_summary_chart_option);
+
+        var system_status_chart = echarts.init(document.getElementById("system_status_chart"));
+        system_status_chart.setOption(system_status_chart_option);
+
+        $.get('/analysis/api/statistics_month').done(function (response) {
+
+            var data = response.analysis_num;
+            recent_analysis_chart.setOption({
+                xAxis : [
+                    {
+                        type : 'category',
+                        boundaryGap : false,
+                        data : data.x
+                    }
+                ],
+                series : [
+                    {
+                        name:'高危',
+                        type:'line',
+                        stack: '总量',
+                        areaStyle: {normal: {}},
+                        data: data.high
+                    },
+                    {
+                        name:'低危',
+                        type:'line',
+                        stack: '总量',
+                        areaStyle: {normal: {}},
+                        data: data.low
+                    }
+                ]
+            });
+
+
+            o = {
+                series : [
+                    {
+                        name:'今日',
+{#                        type:'pie',#}
+{#                        radius : [0, '50%'],#}
+{#                        center: ["50%", "40%"],#}
+{#                        areaStyle: {normal: {}},#}
+{#                        label: { normal: { show: false }, emphasis: { show: true }},#}
+{#                        lableLine: { normal: { show: false }, emphasis: { show: true }},#}
+                        data: [
+                            {value: response.today_num.high, name: "高危"},
+                            {value: response.today_num.low, name: "低危"}
+                        ]
+                    },
+                    {
+                        name:'本周',
+                        data: [
+                            {value: response.this_week_num.high, name: "高危"},
+                            {value: response.this_week_num.low, name: "低危"}
+                        ]
+                    },
+                    {
+                        name:'本月',
+                        data: [
+                            {value: response.this_month_num.high, name: "高危"},
+                            {value: response.this_month_num.low, name: "低危"}
+                        ]
+                    }
+                ]
+            };
+            recent_analysis_summary_chart.setOption(o)
+        });
+
+        function b_to_gb_float(num) {
+            return (num*1.0/1024/1024/1024).toFixed(1)
+        }
+        function kb_to_gb_float(num) {
+            return (num*1.0/1024/1024).toFixed(1)
+        }
+
+        $.get("/cuckoo/api/status").done(function (response) {
+            if(!response.status) {
+                return NULL;
+            }
+
+
+            var data = response.data;
+            var disk_avail = b_to_gb_float(data.diskspace.analyses.free);
+            var disk_used = b_to_gb_float(data.diskspace.analyses.used);
+            var mem_avail = kb_to_gb_float(data.memavail);
+            var mem_used = kb_to_gb_float(data.memtotal - data.memavail);
+
+            var cpu_load =  data.cpuload[0] > data.cpucount? data.cpucount: data.cpuload[0];
+            var cpu_avail = data.cpucount - cpu_load;
+
+            system_status_chart.setOption({
+                series : [
+                    {
+                        name:'磁盘使用量',
+                        data: [
+                            {value: disk_used , name: "已用"},
+                            {value: disk_avail, name: "可用"}
+                        ]
+                    },
+                    {
+                        name:'CPU使用量',
+                        data: [
+                            { value: cpu_load, name: "已用" },
+                            {value: cpu_avail, name: "可用"}
+                        ]
+                    },
+                    {
+                        name:'内存使用量',
+                        data: [
+                            {value: mem_used, name: "已用"},
+                            {value: mem_avail, name: "可用"}
+                        ]
+                    }
+                ]
+            });
+
+        });
+
+
+
+        window.onresize = function () {
+            recent_analysis_chart.resize();
+            recent_analysis_summary_chart.resize();
+        };
+
+        function max(a, b) {
+            return a>b?a:b;
+        }
+
+        var f = function () {
+            var windowH = $(window).height() * 0.4;
+            var chartH = $("#recent_analysis_chart_div").height();
+            $("#recent_analysis_chart_div").css('height', max(windowH, chartH));
+
+            window.onresize();
+        }();
+
+    </script>
+
+{% endblock %}
